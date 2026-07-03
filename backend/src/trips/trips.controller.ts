@@ -17,12 +17,12 @@ export class TripsController {
 
   @Get()
   findAll(@Request() req, @Query('page') page: string = '1', @Query('limit') limit: string = '20') {
-    return this.tripsService.findAll(req.user.role, req.user.userId, Number(page), Number(limit));
+    return this.tripsService.findAll(req.user.role, req.user.id, Number(page), Number(limit));
   }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req) {
-    return this.tripsService.findOne(id, req.user.role, req.user.userId);
+    return this.tripsService.findOne(id, req.user.role, req.user.id);
   }
 
   @Patch(':id')

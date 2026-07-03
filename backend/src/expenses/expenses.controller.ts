@@ -12,7 +12,7 @@ export class ExpensesController {
 
   @Get()
   findAll(@Request() req: any, @Query('page') page: string = '1', @Query('limit') limit: string = '20') {
-    return this.expensesService.findAll(req.user?.role, req.user?.userId, Number(page), Number(limit));
+    return this.expensesService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit));
   }
 
   @Get(':id')
@@ -22,7 +22,7 @@ export class ExpensesController {
 
   @Post()
   create(@Body() createExpenseDto: Partial<Expense>, @Request() req: any) {
-    return this.expensesService.create(createExpenseDto, req.user?.userId);
+    return this.expensesService.create(createExpenseDto, req.user?.id);
   }
 
   @Patch(':id')

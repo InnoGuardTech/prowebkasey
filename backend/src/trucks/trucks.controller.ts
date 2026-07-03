@@ -16,13 +16,13 @@ export class TrucksController {
   }
 
   @Get()
-  findAll(@Request() req, @Query('page') page: string = '1', @Query('limit') limit: string = '20') {
-    return this.trucksService.findAll(req.user?.role, req.user?.userId, Number(page), Number(limit));
+  findAll(@Request() req: any, @Query('page') page: string = '1', @Query('limit') limit: string = '20') {
+    return this.trucksService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Request() req) {
-    return this.trucksService.findOne(id, req.user?.role, req.user?.userId);
+  findOne(@Param('id') id: string, @Request() req: any) {
+    return this.trucksService.findOne(id, req.user?.role, req.user?.id);
   }
 
   @Patch(':id')
