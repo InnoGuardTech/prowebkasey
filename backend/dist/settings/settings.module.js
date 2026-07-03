@@ -1,40 +1,25 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "SettingsModule", {
-    enumerable: true,
-    get: function() {
-        return SettingsModule;
-    }
-});
-const _common = require("@nestjs/common");
-const _typeorm = require("@nestjs/typeorm");
-const _settingscontroller = require("./settings.controller");
-const _settingsservice = require("./settings.service");
-const _settingentity = require("../entities/setting.entity");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SettingsModule = void 0;
+const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const settings_controller_1 = require("./settings.controller");
+const settings_service_1 = require("./settings.service");
+const setting_entity_1 = require("../entities/setting.entity");
 let SettingsModule = class SettingsModule {
 };
-SettingsModule = _ts_decorate([
-    (0, _common.Module)({
-        imports: [
-            _typeorm.TypeOrmModule.forFeature([
-                _settingentity.Setting
-            ])
-        ],
-        controllers: [
-            _settingscontroller.SettingsController
-        ],
-        providers: [
-            _settingsservice.SettingsService
-        ]
+exports.SettingsModule = SettingsModule;
+exports.SettingsModule = SettingsModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([setting_entity_1.Setting])],
+        controllers: [settings_controller_1.SettingsController],
+        providers: [settings_service_1.SettingsService],
     })
 ], SettingsModule);
-
 //# sourceMappingURL=settings.module.js.map

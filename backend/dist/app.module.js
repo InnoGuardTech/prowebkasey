@@ -1,70 +1,58 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "AppModule", {
-    enumerable: true,
-    get: function() {
-        return AppModule;
-    }
-});
-const _common = require("@nestjs/common");
-const _core = require("@nestjs/core");
-const _config = require("@nestjs/config");
-const _throttler = require("@nestjs/throttler");
-const _auditinterceptor = require("./audit/audit.interceptor");
-const _typeorm = require("@nestjs/typeorm");
-const _appcontroller = require("./app.controller");
-const _appservice = require("./app.service");
-const _seedservice = require("./seed.service");
-const _authmodule = require("./auth/auth.module");
-const _userentity = require("./entities/user.entity");
-const _truckentity = require("./entities/truck.entity");
-const _driverentity = require("./entities/driver.entity");
-const _contractorentity = require("./entities/contractor.entity");
-const _invoiceentity = require("./entities/invoice.entity");
-const _expenseentity = require("./entities/expense.entity");
-const _settingentity = require("./entities/setting.entity");
-const _expense_categoryentity = require("./entities/expense_category.entity");
-const _tripentity = require("./entities/trip.entity");
-const _trucksmodule = require("./trucks/trucks.module");
-const _driversmodule = require("./drivers/drivers.module");
-const _contractorsmodule = require("./contractors/contractors.module");
-const _expense_categoriesmodule = require("./expense-categories/expense_categories.module");
-const _invoicesmodule = require("./invoices/invoices.module");
-const _expensesmodule = require("./expenses/expenses.module");
-const _dashboardmodule = require("./dashboard/dashboard.module");
-const _auditmodule = require("./audit/audit.module");
-const _audit_logentity = require("./entities/audit_log.entity");
-const _searchmodule = require("./search/search.module");
-const _usersmodule = require("./users/users.module");
-const _tripsmodule = require("./trips/trips.module");
-const _settingsmodule = require("./settings/settings.module");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppModule = void 0;
+const common_1 = require("@nestjs/common");
+const core_1 = require("@nestjs/core");
+const config_1 = require("@nestjs/config");
+const throttler_1 = require("@nestjs/throttler");
+const audit_interceptor_1 = require("./audit/audit.interceptor");
+const typeorm_1 = require("@nestjs/typeorm");
+const app_controller_1 = require("./app.controller");
+const app_service_1 = require("./app.service");
+const seed_service_1 = require("./seed.service");
+const auth_module_1 = require("./auth/auth.module");
+const user_entity_1 = require("./entities/user.entity");
+const truck_entity_1 = require("./entities/truck.entity");
+const driver_entity_1 = require("./entities/driver.entity");
+const contractor_entity_1 = require("./entities/contractor.entity");
+const invoice_entity_1 = require("./entities/invoice.entity");
+const expense_entity_1 = require("./entities/expense.entity");
+const setting_entity_1 = require("./entities/setting.entity");
+const expense_category_entity_1 = require("./entities/expense_category.entity");
+const trip_entity_1 = require("./entities/trip.entity");
+const trucks_module_1 = require("./trucks/trucks.module");
+const drivers_module_1 = require("./drivers/drivers.module");
+const contractors_module_1 = require("./contractors/contractors.module");
+const expense_categories_module_1 = require("./expense-categories/expense_categories.module");
+const invoices_module_1 = require("./invoices/invoices.module");
+const expenses_module_1 = require("./expenses/expenses.module");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
+const audit_module_1 = require("./audit/audit.module");
+const audit_log_entity_1 = require("./entities/audit_log.entity");
+const search_module_1 = require("./search/search.module");
+const users_module_1 = require("./users/users.module");
+const trips_module_1 = require("./trips/trips.module");
+const settings_module_1 = require("./settings/settings.module");
 let AppModule = class AppModule {
 };
-AppModule = _ts_decorate([
-    (0, _common.Module)({
+exports.AppModule = AppModule;
+exports.AppModule = AppModule = __decorate([
+    (0, common_1.Module)({
         imports: [
-            _config.ConfigModule.forRoot({
-                isGlobal: true
-            }),
-            _throttler.ThrottlerModule.forRoot([
-                {
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+            throttler_1.ThrottlerModule.forRoot([{
                     ttl: 60000,
-                    limit: 100
-                }
-            ]),
-            _typeorm.TypeOrmModule.forRootAsync({
-                imports: [
-                    _config.ConfigModule
-                ],
-                useFactory: (configService)=>{
+                    limit: 100,
+                }]),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: (configService) => {
                     const type = configService.get('DB_TYPE', 'sqlite');
                     if (type === 'postgres') {
                         return {
@@ -75,24 +63,12 @@ AppModule = _ts_decorate([
                             username: configService.get('DB_USERNAME', 'postgres'),
                             password: configService.get('DB_PASSWORD', 'root'),
                             database: configService.get('DB_DATABASE', 'prokasey_db'),
-                            ssl: configService.get('DB_URL') ? {
-                                rejectUnauthorized: false
-                            } : false,
-                            entities: [
-                                _userentity.User,
-                                _truckentity.Truck,
-                                _driverentity.Driver,
-                                _contractorentity.Contractor,
-                                _invoiceentity.Invoice,
-                                _expenseentity.Expense,
-                                _expense_categoryentity.ExpenseCategory,
-                                _audit_logentity.AuditLog,
-                                _tripentity.Trip,
-                                _settingentity.Setting
-                            ],
-                            synchronize: true
+                            ssl: configService.get('DB_URL') ? { rejectUnauthorized: false } : false,
+                            entities: [user_entity_1.User, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
+                            synchronize: true,
                         };
-                    } else if (type === 'mysql') {
+                    }
+                    else if (type === 'mysql') {
                         return {
                             type: 'mysql',
                             host: configService.get('DB_HOST', 'localhost'),
@@ -100,77 +76,47 @@ AppModule = _ts_decorate([
                             username: configService.get('DB_USERNAME', 'root'),
                             password: configService.get('DB_PASSWORD', ''),
                             database: configService.get('DB_DATABASE', 'prokasey_db'),
-                            entities: [
-                                _userentity.User,
-                                _truckentity.Truck,
-                                _driverentity.Driver,
-                                _contractorentity.Contractor,
-                                _invoiceentity.Invoice,
-                                _expenseentity.Expense,
-                                _expense_categoryentity.ExpenseCategory,
-                                _audit_logentity.AuditLog,
-                                _tripentity.Trip,
-                                _settingentity.Setting
-                            ],
-                            synchronize: true
+                            entities: [user_entity_1.User, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
+                            synchronize: true,
                         };
                     }
-                    // Fallback to SQLite
                     return {
                         type: 'better-sqlite3',
                         database: 'database.sqlite',
-                        entities: [
-                            _userentity.User,
-                            _truckentity.Truck,
-                            _driverentity.Driver,
-                            _contractorentity.Contractor,
-                            _invoiceentity.Invoice,
-                            _expenseentity.Expense,
-                            _expense_categoryentity.ExpenseCategory,
-                            _audit_logentity.AuditLog,
-                            _tripentity.Trip,
-                            _settingentity.Setting
-                        ],
-                        synchronize: true
+                        entities: [user_entity_1.User, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
+                        synchronize: true,
                     };
                 },
-                inject: [
-                    _config.ConfigService
-                ]
+                inject: [config_1.ConfigService],
             }),
-            _typeorm.TypeOrmModule.forFeature([
-                _userentity.User
-            ]),
-            _authmodule.AuthModule,
-            _trucksmodule.TrucksModule,
-            _driversmodule.DriversModule,
-            _contractorsmodule.ContractorsModule,
-            _expense_categoriesmodule.ExpenseCategoriesModule,
-            _invoicesmodule.InvoicesModule,
-            _expensesmodule.ExpensesModule,
-            _dashboardmodule.DashboardModule,
-            _auditmodule.AuditModule,
-            _searchmodule.SearchModule,
-            _usersmodule.UsersModule,
-            _tripsmodule.TripsModule,
-            _settingsmodule.SettingsModule
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
+            auth_module_1.AuthModule,
+            trucks_module_1.TrucksModule,
+            drivers_module_1.DriversModule,
+            contractors_module_1.ContractorsModule,
+            expense_categories_module_1.ExpenseCategoriesModule,
+            invoices_module_1.InvoicesModule,
+            expenses_module_1.ExpensesModule,
+            dashboard_module_1.DashboardModule,
+            audit_module_1.AuditModule,
+            search_module_1.SearchModule,
+            users_module_1.UsersModule,
+            trips_module_1.TripsModule,
+            settings_module_1.SettingsModule,
         ],
-        controllers: [
-            _appcontroller.AppController
-        ],
+        controllers: [app_controller_1.AppController],
         providers: [
-            _appservice.AppService,
-            _seedservice.SeedService,
+            app_service_1.AppService,
+            seed_service_1.SeedService,
             {
-                provide: _core.APP_INTERCEPTOR,
-                useClass: _auditinterceptor.AuditInterceptor
+                provide: core_1.APP_INTERCEPTOR,
+                useClass: audit_interceptor_1.AuditInterceptor,
             },
             {
-                provide: _core.APP_GUARD,
-                useClass: _throttler.ThrottlerGuard
+                provide: core_1.APP_GUARD,
+                useClass: throttler_1.ThrottlerGuard,
             }
-        ]
+        ],
     })
 ], AppModule);
-
 //# sourceMappingURL=app.module.js.map

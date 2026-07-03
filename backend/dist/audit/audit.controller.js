@@ -1,46 +1,37 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "AuditController", {
-    enumerable: true,
-    get: function() {
-        return AuditController;
-    }
-});
-const _common = require("@nestjs/common");
-const _passport = require("@nestjs/passport");
-const _auditservice = require("./audit.service");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-function _ts_metadata(k, v) {
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuditController = void 0;
+const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+const audit_service_1 = require("./audit.service");
 let AuditController = class AuditController {
+    auditService;
+    constructor(auditService) {
+        this.auditService = auditService;
+    }
     findAll() {
         return this.auditService.findAll();
     }
-    constructor(auditService){
-        this.auditService = auditService;
-    }
 };
-_ts_decorate([
-    (0, _common.Get)(),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", []),
-    _ts_metadata("design:returntype", void 0)
+exports.AuditController = AuditController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
 ], AuditController.prototype, "findAll", null);
-AuditController = _ts_decorate([
-    (0, _common.Controller)('api/v1/audit-logs'),
-    (0, _common.UseGuards)((0, _passport.AuthGuard)('jwt')),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        typeof _auditservice.AuditService === "undefined" ? Object : _auditservice.AuditService
-    ])
+exports.AuditController = AuditController = __decorate([
+    (0, common_1.Controller)('api/v1/audit-logs'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    __metadata("design:paramtypes", [audit_service_1.AuditService])
 ], AuditController);
-
 //# sourceMappingURL=audit.controller.js.map

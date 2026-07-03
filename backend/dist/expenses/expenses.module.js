@@ -1,43 +1,26 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "ExpensesModule", {
-    enumerable: true,
-    get: function() {
-        return ExpensesModule;
-    }
-});
-const _common = require("@nestjs/common");
-const _typeorm = require("@nestjs/typeorm");
-const _expenseentity = require("../entities/expense.entity");
-const _expensesservice = require("./expenses.service");
-const _expensescontroller = require("./expenses.controller");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ExpensesModule = void 0;
+const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const expense_entity_1 = require("../entities/expense.entity");
+const expenses_service_1 = require("./expenses.service");
+const expenses_controller_1 = require("./expenses.controller");
 let ExpensesModule = class ExpensesModule {
 };
-ExpensesModule = _ts_decorate([
-    (0, _common.Module)({
-        imports: [
-            _typeorm.TypeOrmModule.forFeature([
-                _expenseentity.Expense
-            ])
-        ],
-        controllers: [
-            _expensescontroller.ExpensesController
-        ],
-        providers: [
-            _expensesservice.ExpensesService
-        ],
-        exports: [
-            _expensesservice.ExpensesService
-        ]
+exports.ExpensesModule = ExpensesModule;
+exports.ExpensesModule = ExpensesModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([expense_entity_1.Expense])],
+        controllers: [expenses_controller_1.ExpensesController],
+        providers: [expenses_service_1.ExpensesService],
+        exports: [expenses_service_1.ExpensesService],
     })
 ], ExpensesModule);
-
 //# sourceMappingURL=expenses.module.js.map

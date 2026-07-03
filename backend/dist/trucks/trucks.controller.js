@@ -1,33 +1,28 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "TrucksController", {
-    enumerable: true,
-    get: function() {
-        return TrucksController;
-    }
-});
-const _common = require("@nestjs/common");
-const _trucksservice = require("./trucks.service");
-const _passport = require("@nestjs/passport");
-const _rolesguard = require("../auth/roles.guard");
-const _rolesdecorator = require("../auth/roles.decorator");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-function _ts_metadata(k, v) {
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-}
-function _ts_param(paramIndex, decorator) {
-    return function(target, key) {
-        decorator(target, key, paramIndex);
-    };
-}
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TrucksController = void 0;
+const common_1 = require("@nestjs/common");
+const trucks_service_1 = require("./trucks.service");
+const passport_1 = require("@nestjs/passport");
+const roles_guard_1 = require("../auth/roles.guard");
+const roles_decorator_1 = require("../auth/roles.decorator");
 let TrucksController = class TrucksController {
+    trucksService;
+    constructor(trucksService) {
+        this.trucksService = trucksService;
+    }
     create(createTruckDto) {
         return this.trucksService.create(createTruckDto);
     }
@@ -43,73 +38,53 @@ let TrucksController = class TrucksController {
     remove(id) {
         return this.trucksService.remove(id);
     }
-    constructor(trucksService){
-        this.trucksService = trucksService;
-    }
 };
-_ts_decorate([
-    (0, _common.Post)(),
-    (0, _rolesdecorator.Roles)('admin', 'accountant'),
-    _ts_param(0, (0, _common.Body)()),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        Object
-    ]),
-    _ts_metadata("design:returntype", void 0)
+exports.TrucksController = TrucksController;
+__decorate([
+    (0, common_1.Post)(),
+    (0, roles_decorator_1.Roles)('admin', 'accountant'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
 ], TrucksController.prototype, "create", null);
-_ts_decorate([
-    (0, _common.Get)(),
-    _ts_param(0, (0, _common.Request)()),
-    _ts_param(1, (0, _common.Query)('page')),
-    _ts_param(2, (0, _common.Query)('limit')),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        void 0,
-        String,
-        String
-    ]),
-    _ts_metadata("design:returntype", void 0)
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:returntype", void 0)
 ], TrucksController.prototype, "findAll", null);
-_ts_decorate([
-    (0, _common.Get)(':id'),
-    _ts_param(0, (0, _common.Param)('id')),
-    _ts_param(1, (0, _common.Request)()),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        String,
-        void 0
-    ]),
-    _ts_metadata("design:returntype", void 0)
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
 ], TrucksController.prototype, "findOne", null);
-_ts_decorate([
-    (0, _common.Patch)(':id'),
-    (0, _rolesdecorator.Roles)('admin', 'accountant'),
-    _ts_param(0, (0, _common.Param)('id')),
-    _ts_param(1, (0, _common.Body)()),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        String,
-        Object
-    ]),
-    _ts_metadata("design:returntype", void 0)
+__decorate([
+    (0, common_1.Patch)(':id'),
+    (0, roles_decorator_1.Roles)('admin', 'accountant'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
 ], TrucksController.prototype, "update", null);
-_ts_decorate([
-    (0, _common.Delete)(':id'),
-    (0, _rolesdecorator.Roles)('admin'),
-    _ts_param(0, (0, _common.Param)('id')),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        String
-    ]),
-    _ts_metadata("design:returntype", void 0)
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, roles_decorator_1.Roles)('admin'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
 ], TrucksController.prototype, "remove", null);
-TrucksController = _ts_decorate([
-    (0, _common.UseGuards)((0, _passport.AuthGuard)('jwt'), _rolesguard.RolesGuard),
-    (0, _common.Controller)('api/v1/trucks'),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        typeof _trucksservice.TrucksService === "undefined" ? Object : _trucksservice.TrucksService
-    ])
+exports.TrucksController = TrucksController = __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
+    (0, common_1.Controller)('api/v1/trucks'),
+    __metadata("design:paramtypes", [trucks_service_1.TrucksService])
 ], TrucksController);
-
 //# sourceMappingURL=trucks.controller.js.map

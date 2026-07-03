@@ -1,56 +1,35 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "ContractorsService", {
-    enumerable: true,
-    get: function() {
-        return ContractorsService;
-    }
-});
-const _common = require("@nestjs/common");
-const _typeorm = require("@nestjs/typeorm");
-const _typeorm1 = require("typeorm");
-const _contractorentity = require("../entities/contractor.entity");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-function _ts_metadata(k, v) {
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-}
-function _ts_param(paramIndex, decorator) {
-    return function(target, key) {
-        decorator(target, key, paramIndex);
-    };
-}
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ContractorsService = void 0;
+const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
+const contractor_entity_1 = require("../entities/contractor.entity");
 let ContractorsService = class ContractorsService {
+    contractorsRepository;
+    constructor(contractorsRepository) {
+        this.contractorsRepository = contractorsRepository;
+    }
     async findAll(page = 1, limit = 20) {
-        const [data, total] = await this.contractorsRepository.findAndCount({
-            where: {
-                is_active: true
-            },
-            skip: (page - 1) * limit,
-            take: limit
-        });
-        return {
-            data,
-            total,
-            page,
-            lastPage: Math.ceil(total / limit)
-        };
+        const [data, total] = await this.contractorsRepository.findAndCount({ where: { is_active: true }, skip: (page - 1) * limit, take: limit });
+        return { data, total, page, lastPage: Math.ceil(total / limit) };
     }
     async findOne(id) {
-        const contractor = await this.contractorsRepository.findOne({
-            where: {
-                id,
-                is_active: true
-            }
-        });
+        const contractor = await this.contractorsRepository.findOne({ where: { id, is_active: true } });
         if (!contractor) {
-            throw new _common.NotFoundException(`Contractor with ID ${id} not found`);
+            throw new common_1.NotFoundException(`Contractor with ID ${id} not found`);
         }
         return contractor;
     }
@@ -63,17 +42,11 @@ let ContractorsService = class ContractorsService {
         await this.contractorsRepository.update(id, contractorData);
         return this.findOne(id);
     }
-    constructor(contractorsRepository){
-        this.contractorsRepository = contractorsRepository;
-    }
 };
-ContractorsService = _ts_decorate([
-    (0, _common.Injectable)(),
-    _ts_param(0, (0, _typeorm.InjectRepository)(_contractorentity.Contractor)),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        typeof _typeorm1.Repository === "undefined" ? Object : _typeorm1.Repository
-    ])
+exports.ContractorsService = ContractorsService;
+exports.ContractorsService = ContractorsService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(contractor_entity_1.Contractor)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], ContractorsService);
-
 //# sourceMappingURL=contractors.service.js.map

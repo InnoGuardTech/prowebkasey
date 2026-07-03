@@ -1,77 +1,66 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "Contractor", {
-    enumerable: true,
-    get: function() {
-        return Contractor;
-    }
-});
-const _typeorm = require("typeorm");
-const _invoiceentity = require("./invoice.entity");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-function _ts_metadata(k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-}
-let Contractor = class Contractor {
 };
-_ts_decorate([
-    (0, _typeorm.PrimaryGeneratedColumn)('uuid'),
-    _ts_metadata("design:type", String)
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Contractor = void 0;
+const typeorm_1 = require("typeorm");
+const invoice_entity_1 = require("./invoice.entity");
+let Contractor = class Contractor {
+    id;
+    name;
+    phone;
+    company_name;
+    notes;
+    is_active;
+    created_at;
+    updated_at;
+    invoices;
+};
+exports.Contractor = Contractor;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
 ], Contractor.prototype, "id", void 0);
-_ts_decorate([
-    (0, _typeorm.Column)({
-        length: 200
-    }),
-    _ts_metadata("design:type", String)
+__decorate([
+    (0, typeorm_1.Column)({ length: 200 }),
+    __metadata("design:type", String)
 ], Contractor.prototype, "name", void 0);
-_ts_decorate([
-    (0, _typeorm.Column)({
-        length: 20,
-        nullable: true
-    }),
-    _ts_metadata("design:type", String)
+__decorate([
+    (0, typeorm_1.Column)({ length: 20, nullable: true }),
+    __metadata("design:type", String)
 ], Contractor.prototype, "phone", void 0);
-_ts_decorate([
-    (0, _typeorm.Column)({
-        length: 200,
-        nullable: true
-    }),
-    _ts_metadata("design:type", String)
+__decorate([
+    (0, typeorm_1.Column)({ length: 200, nullable: true }),
+    __metadata("design:type", String)
 ], Contractor.prototype, "company_name", void 0);
-_ts_decorate([
-    (0, _typeorm.Column)({
-        type: 'text',
-        nullable: true
-    }),
-    _ts_metadata("design:type", String)
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', nullable: true }),
+    __metadata("design:type", String)
 ], Contractor.prototype, "notes", void 0);
-_ts_decorate([
-    (0, _typeorm.Column)({
-        default: true
-    }),
-    _ts_metadata("design:type", Boolean)
+__decorate([
+    (0, typeorm_1.Column)({ default: true }),
+    __metadata("design:type", Boolean)
 ], Contractor.prototype, "is_active", void 0);
-_ts_decorate([
-    (0, _typeorm.CreateDateColumn)(),
-    _ts_metadata("design:type", typeof Date === "undefined" ? Object : Date)
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
 ], Contractor.prototype, "created_at", void 0);
-_ts_decorate([
-    (0, _typeorm.UpdateDateColumn)(),
-    _ts_metadata("design:type", typeof Date === "undefined" ? Object : Date)
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
 ], Contractor.prototype, "updated_at", void 0);
-_ts_decorate([
-    (0, _typeorm.OneToMany)(()=>_invoiceentity.Invoice, (invoice)=>invoice.contractor),
-    _ts_metadata("design:type", Array)
+__decorate([
+    (0, typeorm_1.OneToMany)(() => invoice_entity_1.Invoice, invoice => invoice.contractor),
+    __metadata("design:type", Array)
 ], Contractor.prototype, "invoices", void 0);
-Contractor = _ts_decorate([
-    (0, _typeorm.Entity)('contractors')
+exports.Contractor = Contractor = __decorate([
+    (0, typeorm_1.Entity)('contractors')
 ], Contractor);
-
 //# sourceMappingURL=contractor.entity.js.map

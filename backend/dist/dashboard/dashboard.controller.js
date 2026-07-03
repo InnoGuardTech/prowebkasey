@@ -1,55 +1,46 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "DashboardController", {
-    enumerable: true,
-    get: function() {
-        return DashboardController;
-    }
-});
-const _common = require("@nestjs/common");
-const _passport = require("@nestjs/passport");
-const _dashboardservice = require("./dashboard.service");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-function _ts_metadata(k, v) {
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DashboardController = void 0;
+const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+const dashboard_service_1 = require("./dashboard.service");
 let DashboardController = class DashboardController {
+    dashboardService;
+    constructor(dashboardService) {
+        this.dashboardService = dashboardService;
+    }
     getStats() {
         return this.dashboardService.getDashboardStats();
     }
     getAlerts() {
         return this.dashboardService.getAlerts();
     }
-    constructor(dashboardService){
-        this.dashboardService = dashboardService;
-    }
 };
-_ts_decorate([
-    (0, _common.Get)(),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", []),
-    _ts_metadata("design:returntype", void 0)
+exports.DashboardController = DashboardController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
 ], DashboardController.prototype, "getStats", null);
-_ts_decorate([
-    (0, _common.Get)('alerts'),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", []),
-    _ts_metadata("design:returntype", void 0)
+__decorate([
+    (0, common_1.Get)('alerts'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
 ], DashboardController.prototype, "getAlerts", null);
-DashboardController = _ts_decorate([
-    (0, _common.Controller)('api/v1/dashboard'),
-    (0, _common.UseGuards)((0, _passport.AuthGuard)('jwt')),
-    _ts_metadata("design:type", Function),
-    _ts_metadata("design:paramtypes", [
-        typeof _dashboardservice.DashboardService === "undefined" ? Object : _dashboardservice.DashboardService
-    ])
+exports.DashboardController = DashboardController = __decorate([
+    (0, common_1.Controller)('api/v1/dashboard'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    __metadata("design:paramtypes", [dashboard_service_1.DashboardService])
 ], DashboardController);
-
 //# sourceMappingURL=dashboard.controller.js.map

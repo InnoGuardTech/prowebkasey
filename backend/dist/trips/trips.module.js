@@ -1,40 +1,25 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "TripsModule", {
-    enumerable: true,
-    get: function() {
-        return TripsModule;
-    }
-});
-const _common = require("@nestjs/common");
-const _typeorm = require("@nestjs/typeorm");
-const _tripsservice = require("./trips.service");
-const _tripscontroller = require("./trips.controller");
-const _tripentity = require("../entities/trip.entity");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TripsModule = void 0;
+const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const trips_service_1 = require("./trips.service");
+const trips_controller_1 = require("./trips.controller");
+const trip_entity_1 = require("../entities/trip.entity");
 let TripsModule = class TripsModule {
 };
-TripsModule = _ts_decorate([
-    (0, _common.Module)({
-        imports: [
-            _typeorm.TypeOrmModule.forFeature([
-                _tripentity.Trip
-            ])
-        ],
-        controllers: [
-            _tripscontroller.TripsController
-        ],
-        providers: [
-            _tripsservice.TripsService
-        ]
+exports.TripsModule = TripsModule;
+exports.TripsModule = TripsModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([trip_entity_1.Trip])],
+        controllers: [trips_controller_1.TripsController],
+        providers: [trips_service_1.TripsService],
     })
 ], TripsModule);
-
 //# sourceMappingURL=trips.module.js.map

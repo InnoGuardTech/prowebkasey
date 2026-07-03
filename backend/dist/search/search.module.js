@@ -1,44 +1,27 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "SearchModule", {
-    enumerable: true,
-    get: function() {
-        return SearchModule;
-    }
-});
-const _common = require("@nestjs/common");
-const _typeorm = require("@nestjs/typeorm");
-const _invoiceentity = require("../entities/invoice.entity");
-const _expenseentity = require("../entities/expense.entity");
-const _truckentity = require("../entities/truck.entity");
-const _searchservice = require("./search.service");
-const _searchcontroller = require("./search.controller");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SearchModule = void 0;
+const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const invoice_entity_1 = require("../entities/invoice.entity");
+const expense_entity_1 = require("../entities/expense.entity");
+const truck_entity_1 = require("../entities/truck.entity");
+const search_service_1 = require("./search.service");
+const search_controller_1 = require("./search.controller");
 let SearchModule = class SearchModule {
 };
-SearchModule = _ts_decorate([
-    (0, _common.Module)({
-        imports: [
-            _typeorm.TypeOrmModule.forFeature([
-                _invoiceentity.Invoice,
-                _expenseentity.Expense,
-                _truckentity.Truck
-            ])
-        ],
-        controllers: [
-            _searchcontroller.SearchController
-        ],
-        providers: [
-            _searchservice.SearchService
-        ]
+exports.SearchModule = SearchModule;
+exports.SearchModule = SearchModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([invoice_entity_1.Invoice, expense_entity_1.Expense, truck_entity_1.Truck])],
+        controllers: [search_controller_1.SearchController],
+        providers: [search_service_1.SearchService],
     })
 ], SearchModule);
-
 //# sourceMappingURL=search.module.js.map

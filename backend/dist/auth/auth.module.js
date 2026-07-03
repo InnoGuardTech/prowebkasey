@@ -1,56 +1,37 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-Object.defineProperty(exports, "AuthModule", {
-    enumerable: true,
-    get: function() {
-        return AuthModule;
-    }
-});
-const _common = require("@nestjs/common");
-const _jwt = require("@nestjs/jwt");
-const _passport = require("@nestjs/passport");
-const _typeorm = require("@nestjs/typeorm");
-const _userentity = require("../entities/user.entity");
-const _driverentity = require("../entities/driver.entity");
-const _authservice = require("./auth.service");
-const _authcontroller = require("./auth.controller");
-const _jwtstrategy = require("./jwt.strategy");
-function _ts_decorate(decorators, target, key, desc) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthModule = void 0;
+const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
+const passport_1 = require("@nestjs/passport");
+const typeorm_1 = require("@nestjs/typeorm");
+const user_entity_1 = require("../entities/user.entity");
+const driver_entity_1 = require("../entities/driver.entity");
+const auth_service_1 = require("./auth.service");
+const auth_controller_1 = require("./auth.controller");
+const jwt_strategy_1 = require("./jwt.strategy");
 let AuthModule = class AuthModule {
 };
-AuthModule = _ts_decorate([
-    (0, _common.Module)({
+exports.AuthModule = AuthModule;
+exports.AuthModule = AuthModule = __decorate([
+    (0, common_1.Module)({
         imports: [
-            _typeorm.TypeOrmModule.forFeature([
-                _userentity.User,
-                _driverentity.Driver
-            ]),
-            _passport.PassportModule,
-            _jwt.JwtModule.register({
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, driver_entity_1.Driver]),
+            passport_1.PassportModule,
+            jwt_1.JwtModule.register({
                 secret: 'super-secret-jwt-key',
-                signOptions: {
-                    expiresIn: '1d'
-                }
-            })
+                signOptions: { expiresIn: '1d' },
+            }),
         ],
-        providers: [
-            _authservice.AuthService,
-            _jwtstrategy.JwtStrategy
-        ],
-        controllers: [
-            _authcontroller.AuthController
-        ],
-        exports: [
-            _authservice.AuthService
-        ]
+        providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy],
+        controllers: [auth_controller_1.AuthController],
+        exports: [auth_service_1.AuthService],
     })
 ], AuthModule);
-
 //# sourceMappingURL=auth.module.js.map
