@@ -62,6 +62,21 @@ function Invoices() {
 
   const handleSave = async () => {
     setError('');
+    
+    // Validation
+    if (!form.invoice_number.trim()) {
+      setError('يرجى إدخال رقم الفاتورة');
+      return;
+    }
+    if (!form.amount || Number(form.amount) <= 0) {
+      setError('يرجى إدخال مبلغ صحيح');
+      return;
+    }
+    if (!form.invoice_date) {
+      setError('يرجى اختيار تاريخ الفاتورة');
+      return;
+    }
+
     const token = localStorage.getItem('token');
     try {
       const url = isEditing ? `/api/v1/invoices/${form.id}` : '/api/v1/invoices';
@@ -91,7 +106,15 @@ function Invoices() {
   };
 
   const openAddModal = () => {
-    setForm({ id: '', invoice_number: '', amount: '', description: '', invoice_date: '', truck_id: '', status: 'pending' });
+    setForm({ 
+      id: '', 
+      invoice_number: '', 
+      amount: '', 
+      description: '', 
+      invoice_date: new Date().toISOString().split('T')[0], 
+      truck_id: '', 
+      status: 'pending' 
+    });
     setIsEditing(false);
     setError('');
     setShowModal(true);

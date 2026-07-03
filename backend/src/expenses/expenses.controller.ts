@@ -32,13 +32,13 @@ export class ExpensesController {
   }
 
   @Post(':id/approve')
-  @Roles('admin', 'accountant')
+  @Roles('admin', 'accountant', 'manager')
   approve(@Param('id') id: string, @Request() req) {
     return this.expensesService.approve(id, req.user.id);
   }
 
   @Post(':id/reject')
-  @Roles('admin', 'accountant')
+  @Roles('admin', 'accountant', 'manager')
   reject(@Param('id') id: string, @Body('reason') reason: string) {
     return this.expensesService.reject(id, reason);
   }
