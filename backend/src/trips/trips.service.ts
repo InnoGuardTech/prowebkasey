@@ -18,7 +18,7 @@ export class TripsService {
 
     // Row-level security for drivers
     if (userRole === 'driver') {
-      query.where('trip.driver_id = :userId', { userId });
+      query.where('driver.id = :userId', { userId });
     }
 
     const total = await query.getCount();
@@ -33,7 +33,7 @@ export class TripsService {
       .where('trip.id = :id', { id });
 
     if (userRole === 'driver') {
-      query.andWhere('trip.driver_id = :userId', { userId });
+      query.andWhere('driver.id = :userId', { userId });
     }
 
     const trip = await query.getOne();

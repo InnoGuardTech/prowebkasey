@@ -17,7 +17,7 @@ export class TrucksService {
       .orderBy('truck.created_at', 'DESC');
 
     if (userRole === 'driver') {
-      query.andWhere('truck.driver = :userId', { userId });
+      query.andWhere('driver.id = :userId', { userId });
     }
 
     const total = await query.getCount();
@@ -32,7 +32,7 @@ export class TrucksService {
       .andWhere('truck.is_deleted = false');
 
     if (userRole === 'driver') {
-      query.andWhere('truck.driver = :userId', { userId });
+      query.andWhere('driver.id = :userId', { userId });
     }
 
     const truck = await query.getOne();
