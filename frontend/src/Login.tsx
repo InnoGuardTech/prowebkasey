@@ -34,22 +34,22 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 relative">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md relative z-10">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-50 dark:bg-titanium-950 px-4 relative transition-colors duration-300">
+      <div className="bg-white dark:bg-titanium-900 p-8 rounded-2xl shadow-xl w-full max-w-md relative z-10 border border-zinc-200 dark:border-titanium-800">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">نظام إدارة القواطر</h1>
-          <p className="text-gray-500">سجل الدخول للمتابعة</p>
+          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">نظام إدارة القواطر</h1>
+          <p className="text-zinc-500 dark:text-zinc-400">سجل الدخول للمتابعة</p>
         </div>
         
         {error && (
-          <div className="bg-error/10 text-error p-3 rounded-lg mb-4 text-sm text-center">
+          <div className="bg-red-500/10 text-red-500 p-3 rounded-lg mb-4 text-sm text-center">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
               البريد الإلكتروني
             </label>
             <input
@@ -57,13 +57,13 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-left dir-ltr"
+              className="w-full px-4 py-3 border border-zinc-300 dark:border-titanium-800 bg-white dark:bg-titanium-950 rounded-xl focus:ring-2 focus:ring-cyber-indigo focus:border-cyber-indigo outline-none transition-all text-left dir-ltr text-zinc-900 dark:text-white"
               placeholder="admin@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
               كلمة المرور
             </label>
             <input
@@ -71,7 +71,7 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-left dir-ltr"
+              className="w-full px-4 py-3 border border-zinc-300 dark:border-titanium-800 bg-white dark:bg-titanium-950 rounded-xl focus:ring-2 focus:ring-cyber-indigo focus:border-cyber-indigo outline-none transition-all text-left dir-ltr text-zinc-900 dark:text-white"
               placeholder="••••••••"
             />
           </div>
@@ -79,7 +79,7 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center"
+            className="w-full bg-cyber-indigo hover:bg-cyber-indigo/90 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-cyber-indigo/30 transition-all flex justify-center items-center active:scale-95"
           >
             {loading ? (
               <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
