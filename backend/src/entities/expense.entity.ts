@@ -48,7 +48,7 @@ export class Expense {
   @JoinColumn({ name: 'approved_by' })
   approver: User;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   approved_at: Date;
 
   @Column({ type: 'text', nullable: true })
@@ -61,7 +61,7 @@ export class Expense {
   @Column({ default: false })
   is_deleted: boolean;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   deleted_at: Date;
 
   @CreateDateColumn()

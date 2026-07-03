@@ -57,7 +57,7 @@ export class Invoice {
   @Column({ default: false })
   is_deleted: boolean;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   deleted_at: Date;
 
   @CreateDateColumn()
