@@ -57,7 +57,7 @@ AppModule = _ts_decorate([
             _throttler.ThrottlerModule.forRoot([
                 {
                     ttl: 60000,
-                    limit: 10
+                    limit: 100
                 }
             ]),
             _typeorm.TypeOrmModule.forRootAsync({
