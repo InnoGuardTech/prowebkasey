@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import GlobalSearch from './GlobalSearch';
+import ErrorBoundary from './ErrorBoundary';
 
 function Layout({ onLogout }: { onLogout: () => void }) {
   const location = useLocation();
@@ -222,7 +223,9 @@ function Layout({ onLogout }: { onLogout: () => void }) {
 
         <div className="flex-1 overflow-auto p-4 md:p-6 flex flex-col">
           <div className="flex-1">
-            <Outlet />
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
           </div>
           
           {/* Elegant Footer Credits */}

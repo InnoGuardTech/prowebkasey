@@ -57,11 +57,13 @@ function Expenses() {
     fetch(`/api/v1/expenses?page=${page}`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
       .then(data => {
-        if (data.data) {
+        if (data.data && Array.isArray(data.data)) {
           setExpenses(data.data);
           setTotalPages(data.lastPage || 1);
-        } else {
+        } else if (Array.isArray(data)) {
           setExpenses(data);
+        } else {
+          setExpenses([]); // Prevents .map() crashes on bad responses (like 429)
         }
         setLoading(false);
       })
