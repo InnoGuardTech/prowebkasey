@@ -22,7 +22,7 @@ export class ExpensesService {
 
     if (userRole === 'driver') {
       // Driver only sees expenses they created OR expenses for their truck
-      query.andWhere('(expense.creator_id = :userId OR truck.driver_id = :userId)', { userId });
+      query.andWhere('(expense.created_by = :userId OR truck.driver_id = :userId)', { userId });
     }
 
     const total = await query.getCount();

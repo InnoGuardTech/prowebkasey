@@ -31,7 +31,7 @@ let ExpensesService = class ExpensesService {
         const query = this.expensesRepository.createQueryBuilder('expense').leftJoinAndSelect('expense.truck', 'truck').leftJoinAndSelect('truck.driver', 'driver').leftJoinAndSelect('expense.category', 'category').leftJoinAndSelect('expense.creator', 'creator').leftJoinAndSelect('expense.approver', 'approver').where('expense.is_deleted = false').orderBy('expense.expense_date', 'DESC');
         if (userRole === 'driver') {
             // Driver only sees expenses they created OR expenses for their truck
-            query.andWhere('(expense.creator_id = :userId OR truck.driver_id = :userId)', {
+            query.andWhere('(expense.created_by = :userId OR truck.driver_id = :userId)', {
                 userId
             });
         }
