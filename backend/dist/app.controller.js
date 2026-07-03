@@ -12,13 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
+const typeorm_1 = require("typeorm");
 let AppController = class AppController {
     appService;
-    constructor(appService) {
+    dataSource;
+    constructor(appService, dataSource) {
         this.appService = appService;
+        this.dataSource = dataSource;
     }
-    getHello() {
-        return this.appService.getHello();
+    async getHello() {
+        try {
+            await this.dataSource.query('SELECT 1');
+            return { status: 'awake', message: 'Backend and Database are fully awake and active!' };
+        }
+        catch (e) {
+            return { status: 'error', message: 'Database is sleeping or unavailable.' };
+        }
     }
 };
 exports.AppController = AppController;
@@ -26,10 +35,11 @@ __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
+    __metadata("design:returntype", Promise)
 ], AppController.prototype, "getHello", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
+    __metadata("design:paramtypes", [app_service_1.AppService,
+        typeorm_1.DataSource])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

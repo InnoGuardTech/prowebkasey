@@ -1,6 +1,11 @@
 import { AppService } from './app.service';
+import { DataSource } from 'typeorm';
 export declare class AppController {
     private readonly appService;
-    constructor(appService: AppService);
-    getHello(): string;
+    private readonly dataSource;
+    constructor(appService: AppService, dataSource: DataSource);
+    getHello(): Promise<{
+        status: string;
+        message: string;
+    }>;
 }
