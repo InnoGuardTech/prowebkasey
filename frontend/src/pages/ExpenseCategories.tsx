@@ -24,7 +24,8 @@ function ExpenseCategories() {
     })
       .then(res => res.json())
       .then(data => {
-        setCategories(data.data || data);
+        const list = (data && data.data && Array.isArray(data.data)) ? data.data : (Array.isArray(data) ? data : []);
+        setCategories(list);
         setLoading(false);
       })
       .catch(() => setLoading(false));

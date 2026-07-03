@@ -51,10 +51,8 @@ function Trucks() {
     fetch('/api/v1/users', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
       .then(data => {
-        const usersArray = data.data || data;
-        if (Array.isArray(usersArray)) {
-          setDrivers(usersArray.filter((u: User) => u.role === 'driver'));
-        }
+        const usersArray = (data && data.data && Array.isArray(data.data)) ? data.data : (Array.isArray(data) ? data : []);
+        setDrivers(usersArray.filter((u: any) => u.role === 'driver'));
       })
       .catch(console.error);
   };

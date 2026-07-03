@@ -74,7 +74,15 @@ function Expenses() {
     const token = localStorage.getItem('token');
     fetch('/api/v1/trucks', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
-      .then(data => setTrucks(data.data || data))
+      .then(data => {
+        if (data && data.data && Array.isArray(data.data)) {
+          setTrucks(data.data);
+        } else if (Array.isArray(data)) {
+          setTrucks(data);
+        } else {
+          setTrucks([]);
+        }
+      })
       .catch(console.error);
   };
 
@@ -82,7 +90,15 @@ function Expenses() {
     const token = localStorage.getItem('token');
     fetch('/api/v1/expenses/categories', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
-      .then(data => setCategories(data.data || data))
+      .then(data => {
+        if (data && data.data && Array.isArray(data.data)) {
+          setCategories(data.data);
+        } else if (Array.isArray(data)) {
+          setCategories(data);
+        } else {
+          setCategories([]);
+        }
+      })
       .catch(console.error);
   };
 

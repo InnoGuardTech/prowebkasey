@@ -43,9 +43,12 @@ function Trips() {
       const [tripsData, trucksData, usersData] = await Promise.all([
         tripsRes.json(), trucksRes.json(), driversRes.json()
       ]);
-      setTrips(tripsData.data || tripsData);
-      setTrucks(trucksData.data || trucksData);
-      setDrivers((usersData.data || usersData).filter((u: any) => u.role === 'driver'));
+      const tripsList = (tripsData && tripsData.data && Array.isArray(tripsData.data)) ? tripsData.data : (Array.isArray(tripsData) ? tripsData : []);
+      const trucksList = (trucksData && trucksData.data && Array.isArray(trucksData.data)) ? trucksData.data : (Array.isArray(trucksData) ? trucksData : []);
+      const usersList = (usersData && usersData.data && Array.isArray(usersData.data)) ? usersData.data : (Array.isArray(usersData) ? usersData : []);
+      setTrips(tripsList);
+      setTrucks(trucksList);
+      setDrivers(usersList.filter((u: any) => u.role === 'driver'));
       setLoading(false);
     } catch (e) {
       console.error(e);

@@ -36,7 +36,15 @@ function Reports() {
 
     fetch('/api/v1/trucks', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
-      .then(data => setTrucks(data.data || data))
+      .then(data => {
+        if (data && data.data && Array.isArray(data.data)) {
+          setTrucks(data.data);
+        } else if (Array.isArray(data)) {
+          setTrucks(data);
+        } else {
+          setTrucks([]);
+        }
+      })
       .catch(console.error);
 
     Promise.all([

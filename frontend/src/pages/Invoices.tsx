@@ -36,23 +36,36 @@ function Invoices() {
     })
       .then(res => res.json())
       .then(data => {
-        if (data.data) {
+        if (data && data.data && Array.isArray(data.data)) {
           setInvoices(data.data);
           setTotalPages(data.lastPage || 1);
-        } else {
+        } else if (Array.isArray(data)) {
           setInvoices(data);
+        } else {
+          setInvoices([]);
         }
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setInvoices([]);
+        setLoading(false);
+      });
   };
 
   const fetchTrucks = () => {
     const token = localStorage.getItem('token');
     fetch('/api/v1/trucks', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
-      .then(data => setTrucks(data.data || data))
-      .catch(console.error);
+      .then(data => {
+        if (data && data.data && Array.isArray(data.data)) {
+          setTrucks(data.data);
+        } else if (Array.isArray(data)) {
+          setTrucks(data);
+        } else {
+          setTrucks([]);
+        }
+      })
+      .catch(() => setTrucks([]));
   };
 
   useEffect(() => {

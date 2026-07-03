@@ -25,7 +25,8 @@ function Contractors() {
     })
       .then(res => res.json())
       .then(data => {
-        setContractors(data.data || data);
+        const list = (data && data.data && Array.isArray(data.data)) ? data.data : (Array.isArray(data) ? data : []);
+        setContractors(list);
         setLoading(false);
       })
       .catch(() => setLoading(false));
