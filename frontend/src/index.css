@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --chart-income: #4338CA;
+    --chart-income-light: #06B6D4;
+    --chart-expense: #F43F5E;
+    --chart-grid: #E2E8F0;
+    --chart-text: #64748B;
+  }
+  
+  .dark {
+    --chart-grid: #27272A;
+    --chart-text: #A1A1AA;
+  }
+
+  body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    @apply bg-zinc-50 text-zinc-900 dark:bg-titanium-950 dark:text-white antialiased transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .dir-rtl {
+    direction: rtl;
+  }
+  .dir-ltr {
+    direction: ltr;
+  }
+  .glass-panel {
+    @apply bg-white dark:bg-titanium-900 border border-zinc-200 dark:border-titanium-800;
+  }
+  .glass {
+    @apply bg-white/90 dark:bg-titanium-900/90 backdrop-blur-md;
+  }
+  /* Hide scrollbar for a cleaner native mobile app feel */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  @keyframes popup {
+    0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .animate-popup {
+    animation: popup 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+
+@media (max-width: 768px) {
+  /* ── Elegant Horizontal Mobile Tables ── */
+  .overflow-x-auto table {
+    width: 100% !important;
+  }
+  .overflow-x-auto th, .overflow-x-auto td {
+    padding: 0.6rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap !important;
+  }
+  .overflow-x-auto th {
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    color: #71717a !important;
+  }
+  .dark .overflow-x-auto th {
+    color: #a1a1aa !important;
+  }
+}
+
+
+@media print {
+  .no-print, header, aside, button:not(.print-visible) {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+  th, td {
+    border: 1px solid #ccc !important;
+    padding: 8px !important;
+    text-align: right !important;
+    color: black !important;
+  }
+  th {
+    background-color: #f3f4f6 !important;
+    font-weight: bold !important;
+  }
+}
