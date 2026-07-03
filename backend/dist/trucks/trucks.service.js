@@ -28,7 +28,7 @@ let TrucksService = class TrucksService {
             .where('truck.is_deleted = false')
             .orderBy('truck.created_at', 'DESC');
         if (userRole === 'driver') {
-            query.andWhere('truck.driver_id = :userId', { userId });
+            query.andWhere('driver.id = :userId', { userId });
         }
         const total = await query.getCount();
         const data = await query.skip((page - 1) * limit).take(limit).getMany();
@@ -40,7 +40,7 @@ let TrucksService = class TrucksService {
             .where('truck.id = :id', { id })
             .andWhere('truck.is_deleted = false');
         if (userRole === 'driver') {
-            query.andWhere('truck.driver_id = :userId', { userId });
+            query.andWhere('driver.id = :userId', { userId });
         }
         const truck = await query.getOne();
         if (!truck)

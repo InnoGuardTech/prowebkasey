@@ -94,7 +94,7 @@ __decorate([
     __metadata("design:type", user_entity_1.User)
 ], Expense.prototype, "approver", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
     __metadata("design:type", Date)
 ], Expense.prototype, "approved_at", void 0);
 __decorate([
@@ -111,7 +111,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Expense.prototype, "is_deleted", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
     __metadata("design:type", Date)
 ], Expense.prototype, "deleted_at", void 0);
 __decorate([

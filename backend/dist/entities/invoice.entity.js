@@ -105,7 +105,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Invoice.prototype, "is_deleted", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'datetime', nullable: true }),
+    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
     __metadata("design:type", Date)
 ], Invoice.prototype, "deleted_at", void 0);
 __decorate([

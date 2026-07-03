@@ -27,10 +27,10 @@ let TripsController = class TripsController {
         return this.tripsService.create(createTripDto);
     }
     findAll(req, page = '1', limit = '20') {
-        return this.tripsService.findAll(req.user.role, req.user.userId, Number(page), Number(limit));
+        return this.tripsService.findAll(req.user.role, req.user.id, Number(page), Number(limit));
     }
     findOne(id, req) {
-        return this.tripsService.findOne(id, req.user.role, req.user.userId);
+        return this.tripsService.findOne(id, req.user.role, req.user.id);
     }
     update(id, updateTripDto) {
         return this.tripsService.update(id, updateTripDto);

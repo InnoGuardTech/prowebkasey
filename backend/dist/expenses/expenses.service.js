@@ -32,7 +32,7 @@ let ExpensesService = class ExpensesService {
             .where('expense.is_deleted = false')
             .orderBy('expense.expense_date', 'DESC');
         if (userRole === 'driver') {
-            query.andWhere('(expense.created_by = :userId OR truck.driver_id = :userId)', { userId });
+            query.andWhere('(creator.id = :userId OR driver.id = :userId)', { userId });
         }
         const total = await query.getCount();
         const data = await query.skip((page - 1) * limit).take(limit).getMany();

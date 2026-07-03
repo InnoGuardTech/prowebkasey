@@ -24,13 +24,13 @@ let ExpensesController = class ExpensesController {
         this.expensesService = expensesService;
     }
     findAll(req, page = '1', limit = '20') {
-        return this.expensesService.findAll(req.user?.role, req.user?.userId, Number(page), Number(limit));
+        return this.expensesService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit));
     }
     findOne(id) {
         return this.expensesService.findOne(id);
     }
     create(createExpenseDto, req) {
-        return this.expensesService.create(createExpenseDto, req.user?.userId);
+        return this.expensesService.create(createExpenseDto, req.user?.id);
     }
     update(id, updateExpenseDto) {
         return this.expensesService.update(id, updateExpenseDto);

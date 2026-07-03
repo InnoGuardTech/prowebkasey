@@ -27,10 +27,10 @@ let TrucksController = class TrucksController {
         return this.trucksService.create(createTruckDto);
     }
     findAll(req, page = '1', limit = '20') {
-        return this.trucksService.findAll(req.user?.role, req.user?.userId, Number(page), Number(limit));
+        return this.trucksService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit));
     }
     findOne(id, req) {
-        return this.trucksService.findOne(id, req.user?.role, req.user?.userId);
+        return this.trucksService.findOne(id, req.user?.role, req.user?.id);
     }
     update(id, updateTruckDto) {
         return this.trucksService.update(id, updateTruckDto);
