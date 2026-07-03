@@ -3,7 +3,7 @@ const https = require('https');
 const data = JSON.stringify({
   serviceDetails: {
     envSpecificDetails: {
-      buildCommand: "npm install --omit=dev",
+      buildCommand: "npm install && echo 'Skipping build, using pre-compiled dist'",
       startCommand: "npm run start:prod"
     }
   }
