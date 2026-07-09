@@ -87,7 +87,15 @@ export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   return (
     <TenantContext.Provider value={{ ...tenantData, isLoading }}>
-      {!isLoading && children}
+      {isLoading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f9fafb', flexDirection: 'column' }}>
+          <div style={{ width: '40px', height: '40px', border: '4px solid #e5e7eb', borderTopColor: '#4f46e5', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+          <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+          <p style={{ marginTop: '16px', color: '#4b5563', fontFamily: 'system-ui, sans-serif' }}>جاري الاتصال بالخادم وتجهيز النظام...</p>
+        </div>
+      ) : (
+        children
+      )}
     </TenantContext.Provider>
   );
 };
