@@ -11,29 +11,29 @@ export class TripsController {
 
   @Post()
   @Roles('admin', 'accountant')
-  create(@Body() createTripDto: any) {
-    return this.tripsService.create(createTripDto);
+  create(@Body() createTripDto: any, @Request() req: any) {
+    return this.tripsService.create(createTripDto, req.user?.company_id);
   }
 
   @Get()
-  findAll(@Request() req, @Query('page') page: string = '1', @Query('limit') limit: string = '20') {
-    return this.tripsService.findAll(req.user.role, req.user.id, Number(page), Number(limit));
+  findAll(@Request() req: any, @Query('page') page: string = '1', @Query('limit') limit: string = '20') {
+    return this.tripsService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit), req.user?.company_id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Request() req) {
-    return this.tripsService.findOne(id, req.user.role, req.user.id);
+  findOne(@Param('id') id: string, @Request() req: any) {
+    return this.tripsService.findOne(id, req.user?.role, req.user?.id, req.user?.company_id);
   }
 
   @Patch(':id')
   @Roles('admin', 'accountant')
-  update(@Param('id') id: string, @Body() updateTripDto: any) {
-    return this.tripsService.update(id, updateTripDto);
+  update(@Param('id') id: string, @Body() updateTripDto: any, @Request() req: any) {
+    return this.tripsService.update(id, updateTripDto, req.user?.company_id);
   }
 
   @Delete(':id')
   @Roles('admin') // Only admin can delete
-  remove(@Param('id') id: string) {
-    return this.tripsService.remove(id);
+  remove(@Param('id') id: string, @Request() req: any) {
+    return this.tripsService.remove(id, req.user?.company_id);
   }
 }

@@ -1,8 +1,11 @@
 import { Truck } from './truck.entity';
 import { ExpenseCategory } from './expense_category.entity';
 import { User } from './user.entity';
+import { Company } from './company.entity';
 export declare class Expense {
     id: string;
+    company_id: string;
+    company: Company;
     truck_id: string;
     truck: Truck;
     trip_id: string;

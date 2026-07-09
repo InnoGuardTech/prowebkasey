@@ -1,13 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Truck } from './truck.entity';
 import { User } from './user.entity';
 import { Invoice } from './invoice.entity';
 import { Expense } from './expense.entity';
+import { Company } from './company.entity';
 
 @Entity('trips')
 export class Trip {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ nullable: true })
+  company_id: string;
+
+  @ManyToOne(() => Company)
+  @JoinColumn({ name: 'company_id' })
+  company: Company;
 
   @Column({ length: 100 })
   trip_number: string;
@@ -46,6 +54,9 @@ export class Trip {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 
   @OneToMany(() => Invoice, invoice => invoice.trip)
   invoices: Invoice[];

@@ -12,8 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Contractor = void 0;
 const typeorm_1 = require("typeorm");
 const invoice_entity_1 = require("./invoice.entity");
+const company_entity_1 = require("./company.entity");
 let Contractor = class Contractor {
     id;
+    company_id;
+    company;
     name;
     phone;
     company_name;
@@ -21,6 +24,7 @@ let Contractor = class Contractor {
     is_active;
     created_at;
     updated_at;
+    deleted_at;
     invoices;
 };
 exports.Contractor = Contractor;
@@ -28,6 +32,15 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Contractor.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Contractor.prototype, "company_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => company_entity_1.Company),
+    (0, typeorm_1.JoinColumn)({ name: 'company_id' }),
+    __metadata("design:type", company_entity_1.Company)
+], Contractor.prototype, "company", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 200 }),
     __metadata("design:type", String)
@@ -56,6 +69,10 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Contractor.prototype, "updated_at", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", Date)
+], Contractor.prototype, "deleted_at", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => invoice_entity_1.Invoice, invoice => invoice.contractor),
     __metadata("design:type", Array)

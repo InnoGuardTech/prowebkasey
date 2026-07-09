@@ -15,8 +15,11 @@ const truck_entity_1 = require("./truck.entity");
 const user_entity_1 = require("./user.entity");
 const invoice_entity_1 = require("./invoice.entity");
 const expense_entity_1 = require("./expense.entity");
+const company_entity_1 = require("./company.entity");
 let Trip = class Trip {
     id;
+    company_id;
+    company;
     trip_number;
     truck_id;
     truck;
@@ -29,6 +32,7 @@ let Trip = class Trip {
     notes;
     created_at;
     updated_at;
+    deleted_at;
     invoices;
     expenses;
 };
@@ -37,6 +41,15 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Trip.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Trip.prototype, "company_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => company_entity_1.Company),
+    (0, typeorm_1.JoinColumn)({ name: 'company_id' }),
+    __metadata("design:type", company_entity_1.Company)
+], Trip.prototype, "company", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 100 }),
     __metadata("design:type", String)
@@ -87,6 +100,10 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Trip.prototype, "updated_at", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", Date)
+], Trip.prototype, "deleted_at", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => invoice_entity_1.Invoice, invoice => invoice.trip),
     __metadata("design:type", Array)

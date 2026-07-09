@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useTenant } from './contexts/TenantContext';
 import './index.css';
 
 function Login({ onLogin }: { onLogin: (token: string) => void }) {
+  const { tenantName, tenantLogo } = useTenant();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -36,8 +38,11 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-50 dark:bg-titanium-950 px-4 relative transition-colors duration-300">
       <div className="bg-white dark:bg-titanium-900 p-8 rounded-2xl shadow-xl w-full max-w-md relative z-10 border border-zinc-200 dark:border-titanium-800">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">نظام إدارة القواطر</h1>
+        <div className="text-center mb-8 flex flex-col items-center">
+          {tenantLogo && (
+            <img src={tenantLogo} alt={tenantName} className="w-20 h-20 mb-4 rounded-2xl shadow-md object-contain" />
+          )}
+          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">{tenantName}</h1>
           <p className="text-zinc-500 dark:text-zinc-400">سجل الدخول للمتابعة</p>
         </div>
         
@@ -57,7 +62,7 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-zinc-300 dark:border-titanium-800 bg-white dark:bg-titanium-950 rounded-xl focus:ring-2 focus:ring-cyber-indigo focus:border-cyber-indigo outline-none transition-all text-left dir-ltr text-zinc-900 dark:text-white"
+              className="w-full px-4 py-3 border border-zinc-300 dark:border-titanium-800 bg-white dark:bg-titanium-950 rounded-xl focus:ring-2 focus:ring-tenant-primary focus:border-tenant-primary outline-none transition-all text-left dir-ltr text-zinc-900 dark:text-white"
               placeholder="admin@example.com"
             />
           </div>
@@ -71,7 +76,7 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-zinc-300 dark:border-titanium-800 bg-white dark:bg-titanium-950 rounded-xl focus:ring-2 focus:ring-cyber-indigo focus:border-cyber-indigo outline-none transition-all text-left dir-ltr text-zinc-900 dark:text-white"
+              className="w-full px-4 py-3 border border-zinc-300 dark:border-titanium-800 bg-white dark:bg-titanium-950 rounded-xl focus:ring-2 focus:ring-tenant-primary focus:border-tenant-primary outline-none transition-all text-left dir-ltr text-zinc-900 dark:text-white"
               placeholder="••••••••"
             />
           </div>
@@ -79,7 +84,7 @@ function Login({ onLogin }: { onLogin: (token: string) => void }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-cyber-indigo hover:bg-cyber-indigo/90 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-cyber-indigo/30 transition-all flex justify-center items-center active:scale-95"
+            className="w-full bg-tenant-primary hover:opacity-90 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-tenant-primary/30 transition-all flex justify-center items-center active:scale-95"
           >
             {loading ? (
               <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

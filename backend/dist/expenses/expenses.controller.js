@@ -23,43 +23,44 @@ let ExpensesController = class ExpensesController {
     constructor(expensesService) {
         this.expensesService = expensesService;
     }
-    findAll(req, page = '1', limit = '20') {
-        return this.expensesService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit));
+    findAll(page = '1', limit = '20', req) {
+        return this.expensesService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit), req.user?.company_id);
     }
-    findOne(id) {
-        return this.expensesService.findOne(id);
+    findOne(id, req) {
+        return this.expensesService.findOne(id, req.user?.company_id);
     }
     create(createExpenseDto, req) {
-        return this.expensesService.create(createExpenseDto, req.user?.id);
+        return this.expensesService.create(createExpenseDto, req.user.id, req.user?.company_id);
     }
-    update(id, updateExpenseDto) {
-        return this.expensesService.update(id, updateExpenseDto);
+    update(id, updateExpenseDto, req) {
+        return this.expensesService.update(id, updateExpenseDto, req.user?.company_id);
     }
     approve(id, req) {
-        return this.expensesService.approve(id, req.user.id);
+        return this.expensesService.approve(id, req.user.id, req.user?.company_id);
     }
-    reject(id, reason) {
-        return this.expensesService.reject(id, reason);
+    reject(id, reason, req) {
+        return this.expensesService.reject(id, reason, req.user?.company_id);
     }
-    remove(id) {
-        return this.expensesService.remove(id);
+    remove(id, req) {
+        return this.expensesService.remove(id, req.user?.company_id);
     }
 };
 exports.ExpensesController = ExpensesController;
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Request)()),
-    __param(1, (0, common_1.Query)('page')),
-    __param(2, (0, common_1.Query)('limit')),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
+    __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], ExpensesController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ExpensesController.prototype, "findOne", null);
 __decorate([
@@ -75,8 +76,9 @@ __decorate([
     (0, roles_decorator_1.Roles)('admin', 'accountant'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], ExpensesController.prototype, "update", null);
 __decorate([
@@ -93,16 +95,18 @@ __decorate([
     (0, roles_decorator_1.Roles)('admin', 'accountant', 'manager'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)('reason')),
+    __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], ExpensesController.prototype, "reject", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)('admin'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ExpensesController.prototype, "remove", null);
 exports.ExpensesController = ExpensesController = __decorate([

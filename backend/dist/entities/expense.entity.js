@@ -14,8 +14,11 @@ const typeorm_1 = require("typeorm");
 const truck_entity_1 = require("./truck.entity");
 const expense_category_entity_1 = require("./expense_category.entity");
 const user_entity_1 = require("./user.entity");
+const company_entity_1 = require("./company.entity");
 let Expense = class Expense {
     id;
+    company_id;
+    company;
     truck_id;
     truck;
     trip_id;
@@ -41,6 +44,15 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Expense.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Expense.prototype, "company_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => company_entity_1.Company),
+    (0, typeorm_1.JoinColumn)({ name: 'company_id' }),
+    __metadata("design:type", company_entity_1.Company)
+], Expense.prototype, "company", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'truck_id', nullable: true }),
     __metadata("design:type", String)
@@ -94,7 +106,7 @@ __decorate([
     __metadata("design:type", user_entity_1.User)
 ], Expense.prototype, "approver", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)
 ], Expense.prototype, "approved_at", void 0);
 __decorate([
@@ -111,7 +123,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Expense.prototype, "is_deleted", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp', nullable: true }),
+    (0, typeorm_1.DeleteDateColumn)(),
     __metadata("design:type", Date)
 ], Expense.prototype, "deleted_at", void 0);
 __decorate([

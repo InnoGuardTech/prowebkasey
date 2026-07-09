@@ -76,7 +76,7 @@ let SettingsController = class SettingsController {
                 const data = await repo.find();
                 backupData[entity.tableName] = data;
             }
-            const fileName = `prokasey_backup_${new Date().toISOString().split('T')[0]}.json`;
+            const fileName = `qiyada_backup_${new Date().toISOString().split('T')[0]}.json`;
             const filePath = path.join(process.cwd(), fileName);
             fs.writeFileSync(filePath, JSON.stringify(backupData, null, 2));
             return res.download(filePath, fileName, (err) => {

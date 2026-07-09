@@ -9,7 +9,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'نظام إدارة القواطر',
+        name: 'نظام قيادة',
         short_name: 'القواطر',
         description: 'نظام متكامل لإدارة قواطر النقل الثقيل',
         theme_color: '#1A237E',

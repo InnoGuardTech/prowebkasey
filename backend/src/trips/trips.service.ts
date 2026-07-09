@@ -10,15 +10,20 @@ export class TripsService {
     private readonly tripRepository: Repository<Trip>,
   ) {}
 
-  async findAll(userRole: string, userId: string, page: number = 1, limit: number = 20) {
+  async findAll(userRole: string, userId: string, page: number = 1, limit: number = 20, companyId?: string) {
     const query = this.tripRepository.createQueryBuilder('trip')
       .leftJoinAndSelect('trip.truck', 'truck')
       .leftJoinAndSelect('trip.driver', 'driver')
+      .where('trip.deleted_at IS NULL')
       .orderBy('trip.created_at', 'DESC');
+
+    if (companyId) {
+      query.andWhere('trip.company_id = :companyId', { companyId });
+    }
 
     // Row-level security for drivers
     if (userRole === 'driver') {
-      query.where('driver.id = :userId', { userId });
+      query.andWhere('driver.id = :userId', { userId });
     }
 
     const total = await query.getCount();
@@ -26,11 +31,16 @@ export class TripsService {
     return { data, total, page, lastPage: Math.ceil(total / limit) };
   }
 
-  async findOne(id: string, userRole: string, userId: string) {
+  async findOne(id: string, userRole: string, userId: string, companyId?: string) {
     const query = this.tripRepository.createQueryBuilder('trip')
       .leftJoinAndSelect('trip.truck', 'truck')
       .leftJoinAndSelect('trip.driver', 'driver')
-      .where('trip.id = :id', { id });
+      .where('trip.id = :id', { id })
+      .andWhere('trip.is_deleted = false');
+
+    if (companyId) {
+      query.andWhere('trip.company_id = :companyId', { companyId });
+    }
 
     if (userRole === 'driver') {
       query.andWhere('driver.id = :userId', { userId });
@@ -41,18 +51,20 @@ export class TripsService {
     return trip;
   }
 
-  async create(createTripDto: any) {
-    const trip = this.tripRepository.create(createTripDto);
+  async create(createTripDto: any, companyId?: string) {
+    const trip = this.tripRepository.create({ ...createTripDto, company_id: companyId });
     return this.tripRepository.save(trip);
   }
 
-  async update(id: string, updateTripDto: any) {
+  async update(id: string, updateTripDto: any, companyId?: string) {
+    await this.findOne(id, 'admin', '', companyId); // ensure existence and ownership
     await this.tripRepository.update(id, updateTripDto);
-    return this.findOne(id, 'admin', ''); // bypass RLS for admin after update
+    return this.findOne(id, 'admin', '', companyId);
   }
 
-  async remove(id: string) {
-    await this.tripRepository.delete(id);
+  async remove(id: string, companyId?: string) {
+    await this.findOne(id, 'admin', '', companyId); // ensure existence and ownership
+    await this.tripRepository.softDelete(id);
     return { success: true };
   }
 }

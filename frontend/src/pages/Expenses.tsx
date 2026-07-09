@@ -238,7 +238,7 @@ function Expenses() {
       status: e.is_approved ? 'Approved' : 'Pending',
     }));
     const total = expenses.reduce((s, e) => s + Number(e.amount), 0);
-    await exportToPDF(columns, rows, 'Expenses', 'Expenses Report - Prokasey', [
+    await exportToPDF(columns, rows, 'Expenses', 'Expenses Report - Qiyada', [
       { label: 'Total Records', value: String(expenses.length) },
       { label: 'Total Amount', value: `SAR ${total.toLocaleString('en')}` },
     ]);
@@ -250,7 +250,7 @@ function Expenses() {
         <h2 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">إدارة المصروفات</h2>
         <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => printTable('المصروفات - Prokasey')}
+            onClick={() => printTable('المصروفات - Qiyada')}
             className="bg-zinc-700 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105"
           >
             طباعة

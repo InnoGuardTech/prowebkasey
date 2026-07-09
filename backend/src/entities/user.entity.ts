@@ -1,13 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Driver } from './driver.entity';
 import { Truck } from './truck.entity';
 import { Invoice } from './invoice.entity';
 import { Expense } from './expense.entity';
+import { Company } from './company.entity';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ nullable: true })
+  company_id: string;
+
+  @ManyToOne(() => Company, company => company.users, { nullable: true })
+  @JoinColumn({ name: 'company_id' })
+  company: Company;
 
   @Column({ length: 150 })
   full_name: string;

@@ -14,30 +14,37 @@ export class DriversService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async findAll(page: number = 1, limit: number = 20): Promise<{ data: Driver[], total: number, page: number, lastPage: number }> {
-    const [data, total] = await this.driversRepository.findAndCount({ relations: { user: true } , skip: (page - 1) * limit, take: limit });
+  async findAll(page: number = 1, limit: number = 20, companyId?: string): Promise<{ data: Driver[], total: number, page: number, lastPage: number }> {
+    const whereClause: any = {};
+    if (companyId) whereClause.company_id = companyId;
+
+    const [data, total] = await this.driversRepository.findAndCount({ where: whereClause, relations: { user: true } , skip: (page - 1) * limit, take: limit });
     return { data, total, page, lastPage: Math.ceil(total / limit) };
   }
 
-  async findOne(id: string): Promise<Driver> {
-    const driver = await this.driversRepository.findOne({ where: { id }, relations: { user: true } });
+  async findOne(id: string, companyId?: string): Promise<Driver> {
+    const whereClause: any = { id };
+    if (companyId) whereClause.company_id = companyId;
+
+    const driver = await this.driversRepository.findOne({ where: whereClause, relations: { user: true } });
     if (!driver) {
       throw new NotFoundException(`Driver with ID ${id} not found`);
     }
     return driver;
   }
 
-  async create(data: any): Promise<Driver> {
+  async create(data: any, companyId?: string): Promise<Driver> {
     const { full_name, email, phone, password, license_number, license_expiry } = data;
     
     // Create User first
     const password_hash = password ? await bcrypt.hash(password, 10) : await bcrypt.hash('123456', 10);
     const user = this.usersRepository.create({
       full_name,
-      email: email || `driver_${Date.now()}@prokasey.com`, // fallback if no email
+      email: email || `driver_${Date.now()}@qiyada.com`, // fallback if no email
       phone,
       password_hash,
-      role: 'driver'
+      role: 'driver',
+      company_id: companyId
     });
     const savedUser = await this.usersRepository.save(user);
 
@@ -45,13 +52,14 @@ export class DriversService {
     const newDriver = this.driversRepository.create({
       id: savedUser.id,
       license_number,
-      license_expiry
+      license_expiry,
+      company_id: companyId
     });
     return this.driversRepository.save(newDriver);
   }
 
-  async update(id: string, data: any): Promise<Driver> {
-    const driver = await this.findOne(id);
+  async update(id: string, data: any, companyId?: string): Promise<Driver> {
+    const driver = await this.findOne(id, companyId);
     
     // Update user info
     if (data.full_name || data.email || data.phone || data.password || data.is_active !== undefined) {

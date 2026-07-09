@@ -22,11 +22,14 @@ let TrucksService = class TrucksService {
     constructor(trucksRepository) {
         this.trucksRepository = trucksRepository;
     }
-    async findAll(userRole, userId, page = 1, limit = 20) {
+    async findAll(userRole, userId, page = 1, limit = 20, companyId) {
         const query = this.trucksRepository.createQueryBuilder('truck')
             .leftJoinAndSelect('truck.driver', 'driver')
             .where('truck.is_deleted = false')
             .orderBy('truck.created_at', 'DESC');
+        if (companyId) {
+            query.andWhere('truck.company_id = :companyId', { companyId });
+        }
         if (userRole === 'driver') {
             query.andWhere('driver.id = :userId', { userId });
         }
@@ -34,11 +37,14 @@ let TrucksService = class TrucksService {
         const data = await query.skip((page - 1) * limit).take(limit).getMany();
         return { data, total, page, lastPage: Math.ceil(total / limit) };
     }
-    async findOne(id, userRole, userId) {
+    async findOne(id, userRole, userId, companyId) {
         const query = this.trucksRepository.createQueryBuilder('truck')
             .leftJoinAndSelect('truck.driver', 'driver')
             .where('truck.id = :id', { id })
             .andWhere('truck.is_deleted = false');
+        if (companyId) {
+            query.andWhere('truck.company_id = :companyId', { companyId });
+        }
         if (userRole === 'driver') {
             query.andWhere('driver.id = :userId', { userId });
         }
@@ -47,17 +53,18 @@ let TrucksService = class TrucksService {
             throw new common_1.NotFoundException('القاطرة غير موجودة');
         return truck;
     }
-    create(truckData) {
-        const newTruck = this.trucksRepository.create(truckData);
+    create(truckData, companyId) {
+        const newTruck = this.trucksRepository.create({ ...truckData, company_id: companyId });
         return this.trucksRepository.save(newTruck);
     }
-    async update(id, truckData) {
-        await this.findOne(id);
+    async update(id, truckData, companyId) {
+        await this.findOne(id, undefined, undefined, companyId);
         await this.trucksRepository.update(id, truckData);
-        return this.findOne(id);
+        return this.findOne(id, undefined, undefined, companyId);
     }
-    async remove(id) {
-        await this.findOne(id);
+    async remove(id, companyId) {
+        await this.findOne(id, undefined, undefined, companyId);
+        await this.trucksRepository.softDelete(id);
         await this.trucksRepository.update(id, { is_deleted: true });
     }
 };

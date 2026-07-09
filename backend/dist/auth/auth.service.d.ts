@@ -13,6 +13,7 @@ export declare class AuthService {
             email: any;
             full_name: any;
             role: any;
+            company_id: any;
         };
     }>;
     register(userData: Partial<User>, password: string): Promise<User>;

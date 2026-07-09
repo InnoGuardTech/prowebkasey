@@ -159,7 +159,7 @@ function Reports() {
         expense: r.expense > 0 ? fmt(r.expense) : '-',
         net: fmt(r.net),
       }));
-      await exportToPDF(columns, rows, 'التقرير_المالي', 'Financial Report - Prokasey', [
+      await exportToPDF(columns, rows, 'التقرير_المالي', 'Financial Report - Qiyada', [
         { label: 'Total Income', value: `SAR ${fmt(summary.income)}` },
         { label: 'Total Expense', value: `SAR ${fmt(summary.expense)}` },
         { label: 'Net Profit', value: `SAR ${fmt(summary.net)}` },
@@ -188,7 +188,7 @@ function Reports() {
             {exporting ? 'جاري التصدير...' : 'تصدير PDF'}
           </button>
           <button
-            onClick={() => printTable('التقرير المالي - Prokasey')}
+            onClick={() => printTable('التقرير المالي - Qiyada')}
             className="bg-zinc-700 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105 shadow-md"
           >
             <span>🖨️</span> طباعة

@@ -1,4 +1,4 @@
-# 🚀 الدليل الشامل لرفع نظام إدارة القواطر على الاستضافة (Production)
+# 🚀 الدليل الشامل لرفع نظام قيادة على الاستضافة (Production)
 
 هذا الدليل مصمم ليكون بأرقى وأسهل أسلوب لرفع النظام الخاص بك على أي استضافة (VPS) مثل Hostinger أو DigitalOcean.
 
@@ -16,7 +16,7 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_USER=your_db_user
 DB_PASSWORD=your_db_password
-DB_NAME=prokasey_db
+DB_NAME=qiyada_db
 JWT_SECRET=super_secret_key_for_production
 ```
 
@@ -26,7 +26,7 @@ JWT_SECRET=super_secret_key_for_production
 cd backend
 npm install
 npm run build
-pm2 start dist/main.js --name "prokasey-api"
+pm2 start dist/main.js --name "qiyada-api"
 pm2 save
 ```
 *(ملاحظة: لقد قمت بتفعيل خاصية الـ CORS مسبقاً في النظام ليسمح بالاتصال من أي دومين بأمان!)*
@@ -39,19 +39,19 @@ npm install
 npm run build
 ```
 سيقوم هذا الأمر بإنشاء مجلد باسم `dist`. هذا المجلد يحتوي على النظام كاملاً وجاهزاً للعمل!
-قم بنسخ محتويات مجلد `dist` إلى المسار الخاص بالويب على الخادم، مثلاً: `/var/www/prokasey`
+قم بنسخ محتويات مجلد `dist` إلى المسار الخاص بالويب على الخادم، مثلاً: `/var/www/qiyada`
 
 ## 5. ضبط Nginx (لربط الدومين)
-قم بإنشاء ملف إعدادات في Nginx لربط الدومين الخاص بك (مثلاً: `sys.prokasey.com`) كالتالي:
+قم بإنشاء ملف إعدادات في Nginx لربط الدومين الخاص بك (مثلاً: `sys.qiyada.com`) كالتالي:
 
 ```nginx
 server {
     listen 80;
-    server_name sys.prokasey.com;
+    server_name sys.qiyada.com;
 
     # 1. عرض واجهة النظام (الفرونت إند)
     location / {
-        root /var/www/prokasey;
+        root /var/www/qiyada;
         index index.html index.htm;
         try_files $uri $uri/ /index.html;
     }

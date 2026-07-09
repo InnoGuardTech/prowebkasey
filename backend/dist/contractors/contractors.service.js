@@ -22,25 +22,36 @@ let ContractorsService = class ContractorsService {
     constructor(contractorsRepository) {
         this.contractorsRepository = contractorsRepository;
     }
-    async findAll(page = 1, limit = 20) {
-        const [data, total] = await this.contractorsRepository.findAndCount({ where: { is_active: true }, skip: (page - 1) * limit, take: limit });
+    async findAll(page = 1, limit = 20, companyId) {
+        const whereClause = { is_active: true };
+        if (companyId)
+            whereClause.company_id = companyId;
+        const [data, total] = await this.contractorsRepository.findAndCount({ where: whereClause, skip: (page - 1) * limit, take: limit });
         return { data, total, page, lastPage: Math.ceil(total / limit) };
     }
-    async findOne(id) {
-        const contractor = await this.contractorsRepository.findOne({ where: { id, is_active: true } });
+    async findOne(id, companyId) {
+        const whereClause = { id, is_active: true };
+        if (companyId)
+            whereClause.company_id = companyId;
+        const contractor = await this.contractorsRepository.findOne({ where: whereClause });
         if (!contractor) {
             throw new common_1.NotFoundException(`Contractor with ID ${id} not found`);
         }
         return contractor;
     }
-    create(contractorData) {
-        const newContractor = this.contractorsRepository.create(contractorData);
+    create(contractorData, companyId) {
+        const newContractor = this.contractorsRepository.create({ ...contractorData, company_id: companyId });
         return this.contractorsRepository.save(newContractor);
     }
-    async update(id, contractorData) {
-        await this.findOne(id);
+    async update(id, contractorData, companyId) {
+        await this.findOne(id, companyId);
         await this.contractorsRepository.update(id, contractorData);
-        return this.findOne(id);
+        return this.findOne(id, companyId);
+    }
+    async remove(id, companyId) {
+        await this.findOne(id, companyId);
+        await this.contractorsRepository.softDelete(id);
+        await this.contractorsRepository.update(id, { is_active: false });
     }
 };
 exports.ContractorsService = ContractorsService;

@@ -211,7 +211,7 @@ function Invoices() {
       status: inv.status === 'paid' ? 'Paid' : inv.status === 'overdue' ? 'Overdue' : 'Pending',
     }));
     const total = invoices.reduce((s, inv) => s + Number(inv.amount), 0);
-    await exportToPDF(columns, rows, 'Invoices', 'Invoices Report - Prokasey', [
+    await exportToPDF(columns, rows, 'Invoices', 'Invoices Report - Qiyada', [
       { label: 'Total Invoices', value: String(invoices.length) },
       { label: 'Total Revenue', value: `SAR ${total.toLocaleString('en')}` },
     ]);
@@ -223,7 +223,7 @@ function Invoices() {
         <h2 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white">إدارة الفواتير والإيرادات</h2>
         <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => printTable('الفواتير - Prokasey')}
+            onClick={() => printTable('الفواتير - Qiyada')}
             className="bg-zinc-700 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105"
           >
             طباعة

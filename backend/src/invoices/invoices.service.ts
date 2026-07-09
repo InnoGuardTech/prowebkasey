@@ -10,18 +10,24 @@ export class InvoicesService {
     private invoicesRepository: Repository<Invoice>,
   ) {}
 
-  async findAll(page: number = 1, limit: number = 20): Promise<{ data: Invoice[], total: number, page: number, lastPage: number }> {
+  async findAll(page: number = 1, limit: number = 20, companyId?: string): Promise<{ data: Invoice[], total: number, page: number, lastPage: number }> {
+    const whereClause: any = { is_deleted: false };
+    if (companyId) whereClause.company_id = companyId;
+
     const [data, total] = await this.invoicesRepository.findAndCount({
-      where: { is_deleted: false },
+      where: whereClause,
       relations: { truck: true, contractor: true, creator: true },
       order: { invoice_date: 'DESC' }
     , skip: (page - 1) * limit, take: limit });
     return { data, total, page, lastPage: Math.ceil(total / limit) };
   }
 
-  async findOne(id: string): Promise<Invoice> {
+  async findOne(id: string, companyId?: string): Promise<Invoice> {
+    const whereClause: any = { id, is_deleted: false };
+    if (companyId) whereClause.company_id = companyId;
+
     const invoice = await this.invoicesRepository.findOne({
-      where: { id, is_deleted: false },
+      where: whereClause,
       relations: { truck: true, contractor: true, creator: true }
     });
     if (!invoice) {
@@ -30,19 +36,20 @@ export class InvoicesService {
     return invoice;
   }
 
-  async create(invoiceData: any, userId: string): Promise<Invoice> {
+  async create(invoiceData: any, userId: string, companyId?: string): Promise<Invoice> {
     const { truck_id, contractor_id, ...rest } = invoiceData;
     const newInvoice: any = {
       ...rest,
       creator: { id: userId },
+      company_id: companyId,
     };
     if (truck_id) newInvoice.truck = { id: truck_id };
     if (contractor_id) newInvoice.contractor = { id: contractor_id };
     return this.invoicesRepository.save(newInvoice);
   }
 
-  async update(id: string, invoiceData: any): Promise<Invoice> {
-    await this.findOne(id);
+  async update(id: string, invoiceData: any, companyId?: string): Promise<Invoice> {
+    await this.findOne(id, companyId);
     const { truck_id, contractor_id, ...rest } = invoiceData;
 
     const updateData: any = { ...rest };
@@ -54,11 +61,12 @@ export class InvoicesService {
     }
 
     await this.invoicesRepository.save({ id, ...updateData });
-    return this.findOne(id);
+    return this.findOne(id, companyId);
   }
 
-  async softDelete(id: string): Promise<void> {
-    await this.findOne(id);
-    await this.invoicesRepository.update(id, { is_deleted: true, deleted_at: new Date() });
+  async softDelete(id: string, companyId?: string): Promise<void> {
+    await this.findOne(id, companyId);
+    await this.invoicesRepository.softDelete(id); // Using TypeORM's built-in softDelete
+    await this.invoicesRepository.update(id, { is_deleted: true }); // Keep backward compatibility for now
   }
 }

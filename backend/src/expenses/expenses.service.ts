@@ -10,7 +10,7 @@ export class ExpensesService {
     private expensesRepository: Repository<Expense>,
   ) {}
 
-  async findAll(userRole?: string, userId?: string, page: number = 1, limit: number = 20) {
+  async findAll(userRole?: string, userId?: string, page: number = 1, limit: number = 20, companyId?: string) {
     const query = this.expensesRepository.createQueryBuilder('expense')
       .leftJoinAndSelect('expense.truck', 'truck')
       .leftJoinAndSelect('truck.driver', 'driver')
@@ -20,8 +20,11 @@ export class ExpensesService {
       .where('expense.is_deleted = false')
       .orderBy('expense.expense_date', 'DESC');
 
-    if (userRole === 'driver') {
-      // Driver only sees expenses they created OR expenses for their truck
+    if (companyId) {
+      query.andWhere('expense.company_id = :companyId', { companyId });
+    }
+
+    if (userRole === 'driver' && userId) {
       query.andWhere('(creator.id = :userId OR driver.id = :userId)', { userId });
     }
 
@@ -30,9 +33,12 @@ export class ExpensesService {
     return { data, total, page, lastPage: Math.ceil(total / limit) };
   }
 
-  async findOne(id: string): Promise<Expense> {
+  async findOne(id: string, companyId?: string): Promise<Expense> {
+    const whereClause: any = { id, is_deleted: false };
+    if (companyId) whereClause.company_id = companyId;
+
     const expense = await this.expensesRepository.findOne({
-      where: { id, is_deleted: false },
+      where: whereClause,
       relations: { truck: true, category: true, creator: true, approver: true }
     });
     if (!expense) {
@@ -41,20 +47,21 @@ export class ExpensesService {
     return expense;
   }
 
-  async create(expenseData: any, userId: string): Promise<Expense> {
+  async create(expenseData: any, userId: string, companyId?: string): Promise<Expense> {
     const { truck_id, category_id, ...rest } = expenseData;
     const newExpense: any = {
       ...rest,
       creator: { id: userId },
       is_approved: false,
+      company_id: companyId
     };
     if (truck_id) newExpense.truck = { id: truck_id };
     if (category_id) newExpense.category = { id: category_id };
     return this.expensesRepository.save(newExpense);
   }
 
-  async update(id: string, expenseData: any): Promise<Expense> {
-    await this.findOne(id);
+  async update(id: string, expenseData: any, companyId?: string): Promise<Expense> {
+    await this.findOne(id, companyId);
     const { truck_id, category_id, ...rest } = expenseData;
 
     const updateData: any = { ...rest };
@@ -66,30 +73,31 @@ export class ExpensesService {
     }
 
     await this.expensesRepository.save({ id, ...updateData });
-    return this.findOne(id);
+    return this.findOne(id, companyId);
   }
 
-  async approve(id: string, approverId: string): Promise<Expense> {
-    await this.findOne(id);
+  async approve(id: string, approverId: string, companyId?: string): Promise<Expense> {
+    await this.findOne(id, companyId);
     await this.expensesRepository.update(id, {
       is_approved: true,
       approver: { id: approverId } as any,
       approved_at: new Date()
     });
-    return this.findOne(id);
+    return this.findOne(id, companyId);
   }
 
-  async reject(id: string, reason: string): Promise<Expense> {
-    await this.findOne(id);
+  async reject(id: string, reason: string, companyId?: string): Promise<Expense> {
+    await this.findOne(id, companyId);
     await this.expensesRepository.update(id, {
       is_approved: false,
       rejection_reason: reason
     });
-    return this.findOne(id);
+    return this.findOne(id, companyId);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.findOne(id);
-    await this.expensesRepository.update(id, { is_deleted: true, deleted_at: new Date() });
+  async remove(id: string, companyId?: string): Promise<void> {
+    await this.findOne(id, companyId);
+    await this.expensesRepository.softDelete(id);
+    await this.expensesRepository.update(id, { is_deleted: true });
   }
 }

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { exportFullBackupToExcel } from '../utils/exportUtils';
 
 function Settings() {
-  const [systemName, setSystemName] = useState('نظام القواطر');
+  const [systemName, setSystemName] = useState('نظام قيادة');
   const [logo, setLogo] = useState('');
   const [bottomNavConfig, setBottomNavConfig] = useState({
     admin: [{ path: '/', label: 'الرئيسية' }, { path: '/trips', label: 'الرحلات' }, { path: '/expenses', label: 'المصروفات' }, { path: '/reports', label: 'التقارير' }],

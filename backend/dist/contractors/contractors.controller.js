@@ -21,20 +21,20 @@ let ContractorsController = class ContractorsController {
     constructor(contractorsService) {
         this.contractorsService = contractorsService;
     }
-    findAll(page = '1', limit = '20') {
-        return this.contractorsService.findAll(Number(page), Number(limit));
+    findAll(page = '1', limit = '20', req) {
+        return this.contractorsService.findAll(Number(page), Number(limit), req.user?.company_id);
     }
-    findOne(id) {
-        return this.contractorsService.findOne(id);
+    findOne(id, req) {
+        return this.contractorsService.findOne(id, req.user?.company_id);
     }
-    create(contractorData) {
-        return this.contractorsService.create(contractorData);
+    create(contractorData, req) {
+        return this.contractorsService.create(contractorData, req.user?.company_id);
     }
-    update(id, contractorData) {
-        return this.contractorsService.update(id, contractorData);
+    update(id, contractorData, req) {
+        return this.contractorsService.update(id, contractorData, req.user?.company_id);
     }
-    remove(id) {
-        return this.contractorsService.update(id, { is_active: false });
+    remove(id, req) {
+        return this.contractorsService.remove(id, req.user?.company_id);
     }
 };
 exports.ContractorsController = ContractorsController;
@@ -42,37 +42,42 @@ __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('limit')),
+    __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
 ], ContractorsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ContractorsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], ContractorsController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], ContractorsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], ContractorsController.prototype, "remove", null);
 exports.ContractorsController = ContractorsController = __decorate([

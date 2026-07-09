@@ -14,7 +14,10 @@ import Contractors from './pages/Contractors';
 import Trips from './pages/Trips';
 import Users from './pages/Users';
 import ExpenseCategories from './pages/ExpenseCategories';
+import Companies from './pages/Companies';
 import ProtectedRoute from './components/ProtectedRoute';
+
+import { TenantProvider } from './contexts/TenantContext';
 
 function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
@@ -30,44 +33,51 @@ function App() {
   };
 
   if (!token) {
-    return <Login onLogin={handleLogin} />
+    return (
+      <TenantProvider>
+        <Login onLogin={handleLogin} />
+      </TenantProvider>
+    );
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout onLogout={handleLogout} />}>
-          
-          {/* Admin & Manager Only */}
-          <Route element={<ProtectedRoute allowedRoles={['admin', 'manager']} />}>
-            <Route index element={<Dashboard />} />
-            <Route path="trucks" element={<Trucks />} />
-            <Route path="drivers" element={<Drivers />} />
-            <Route path="contractors" element={<Contractors />} />
-            <Route path="audit" element={<AuditLogs />} />
-            <Route path="settings" element={<Settings />} />
+    <TenantProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout onLogout={handleLogout} />}>
+            
+            {/* Admin & Manager Only */}
+            <Route element={<ProtectedRoute allowedRoles={['admin', 'manager', 'super_admin']} />}>
+              <Route index element={<Dashboard />} />
+              <Route path="trucks" element={<Trucks />} />
+              <Route path="drivers" element={<Drivers />} />
+              <Route path="contractors" element={<Contractors />} />
+              <Route path="audit" element={<AuditLogs />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="companies" element={<Companies />} />
+            </Route>
+
+            {/* Admin, Manager, Accountant */}
+            <Route element={<ProtectedRoute allowedRoles={['admin', 'manager', 'accountant']} />}>
+              <Route path="users" element={<Users />} />
+              <Route path="categories" element={<ExpenseCategories />} />
+              <Route path="invoices" element={<Invoices />} />
+              <Route path="reports" element={<Reports />} />
+            </Route>
+
+            {/* Everyone including Driver */}
+            <Route element={<ProtectedRoute allowedRoles={['admin', 'manager', 'accountant', 'driver']} />}>
+              <Route path="trips" element={<Trips />} />
+              <Route path="expenses" element={<Expenses />} />
+            </Route>
+
+            {/* Fallback route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+
           </Route>
-
-          {/* Admin, Manager, Accountant */}
-          <Route element={<ProtectedRoute allowedRoles={['admin', 'manager', 'accountant']} />}>
-            <Route path="users" element={<Users />} />
-            <Route path="categories" element={<ExpenseCategories />} />
-            <Route path="invoices" element={<Invoices />} />
-            <Route path="reports" element={<Reports />} />
-          </Route>
-
-          {/* Everyone including Driver */}
-          <Route element={<ProtectedRoute allowedRoles={['admin', 'manager', 'accountant', 'driver']} />}>
-            <Route path="trips" element={<Trips />} />
-            <Route path="expenses" element={<Expenses />} />
-          </Route>
-
-          {/* Fallback route */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </TenantProvider>
   )
 }
 

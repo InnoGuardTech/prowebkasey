@@ -3,15 +3,17 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import GlobalSearch from './GlobalSearch';
 import ErrorBoundary from './ErrorBoundary';
+import { useTenant } from '../contexts/TenantContext';
 
 function Layout({ onLogout }: { onLogout: () => void }) {
   const location = useLocation();
+  const { tenantName, tenantLogo } = useTenant();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
   });
-  const [systemName, setSystemName] = useState('نظام القواطر');
-  const [systemLogo, setSystemLogo] = useState('');
+  
+  // We still load some local settings if needed, but we override logo and name with TenantContext
   const [bottomNavConfig, setBottomNavConfig] = useState<any>(null);
 
   const loadSettings = async () => {
@@ -21,8 +23,7 @@ function Layout({ onLogout }: { onLogout: () => void }) {
       const res = await axios.get(`/api/v1/settings?t=${Date.now()}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (res.data.systemName) setSystemName(res.data.systemName);
-      if (res.data.logo) setSystemLogo(res.data.logo);
+      // tenant settings from context take precedence, but keep this for backwards compatibility
       if (res.data.bottomNavConfig) {
         try {
           setBottomNavConfig(JSON.parse(res.data.bottomNavConfig));
@@ -64,6 +65,7 @@ function Layout({ onLogout }: { onLogout: () => void }) {
     { path: '/users', label: 'المستخدمين' },
     { path: '/audit', label: 'سجل التدقيق' },
     { path: '/settings', label: 'الإعدادات' },
+    { path: '/companies', label: 'الشركات (Tenants)' },
   ];
 
   const defaultBottomNavItems: Record<string, { path: string; label: string }[]> = {
@@ -111,7 +113,10 @@ function Layout({ onLogout }: { onLogout: () => void }) {
   const isAdmin = role === 'admin' || role === 'manager';
 
   const filteredMenu = menuItems.filter((item) => {
-    if (isAdmin) return true;
+    if (item.path === '/companies') {
+      return role === 'super_admin';
+    }
+    if (isAdmin || role === 'super_admin') return true;
     if (role === 'accountant') {
       return ['/', '/categories', '/invoices', '/expenses', '/reports', '/users'].includes(item.path);
     }
@@ -144,12 +149,12 @@ function Layout({ onLogout }: { onLogout: () => void }) {
       <aside className={`fixed inset-y-0 right-0 z-[70] w-72 bg-white dark:bg-titanium-900 flex flex-col shadow-2xl transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-5 flex items-center justify-between border-b border-zinc-200 dark:border-titanium-800/50">
           <div className="flex items-center gap-3">
-            {systemLogo ? (
-              <img src={systemLogo} alt="Logo" className="w-10 h-10 rounded-xl shadow-lg object-contain bg-white" />
+            {tenantLogo ? (
+              <img src={tenantLogo} alt="Logo" className="w-10 h-10 rounded-xl shadow-lg object-contain bg-white" />
             ) : (
-              <div className="w-10 h-10 bg-cyber-indigo text-white rounded-xl flex items-center justify-center text-xl font-bold shadow-lg">ق</div>
+              <div className="w-10 h-10 bg-tenant-primary text-white rounded-xl flex items-center justify-center text-xl font-bold shadow-lg">ق</div>
             )}
-            <h2 className="text-lg font-bold text-cyber-cyan truncate">{systemName}</h2>
+            <h2 className="text-lg font-bold text-tenant-secondary truncate">{tenantName}</h2>
           </div>
           <button
             className="lg:hidden text-zinc-500 p-2 bg-zinc-50 dark:bg-titanium-950 rounded-lg hover:bg-zinc-100 dark:hover:bg-titanium-800 transition-colors"
@@ -168,7 +173,7 @@ function Layout({ onLogout }: { onLogout: () => void }) {
                 onClick={() => setIsSidebarOpen(false)}
                 className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 font-medium text-sm ${
                   isActive
-                    ? 'bg-cyber-indigo text-white shadow-md shadow-cyber-indigo/30'
+                    ? 'bg-tenant-primary text-white shadow-md shadow-tenant-primary/30'
                     : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-titanium-800 hover:text-zinc-900 dark:hover:text-white'
                 }`}
               >
@@ -215,7 +220,7 @@ function Layout({ onLogout }: { onLogout: () => void }) {
             <span className="hidden md:inline text-zinc-500 dark:text-zinc-400 text-sm">
               {isAdmin ? 'المدير' : role === 'accountant' ? 'المحاسب' : 'السائق'}
             </span>
-            <div className="w-9 h-9 bg-cyber-indigo rounded-full flex items-center justify-center text-white font-bold text-sm shadow shrink-0">
+            <div className="w-9 h-9 bg-tenant-primary rounded-full flex items-center justify-center text-white font-bold text-sm shadow shrink-0">
               {isAdmin ? 'م' : role === 'accountant' ? 'ح' : 'س'}
             </div>
           </div>
@@ -232,17 +237,17 @@ function Layout({ onLogout }: { onLogout: () => void }) {
           <div className="mt-12 mb-4 flex flex-col items-center justify-center opacity-70 hover:opacity-100 transition-all duration-500">
             <p className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.2em] font-medium mb-2">تصميم وتطوير</p>
             <div className="flex items-center gap-3">
-               <span className="w-12 h-[1px] bg-gradient-to-l from-cyber-indigo/50 to-transparent"></span>
-               <p className="text-[15px] font-black bg-gradient-to-r from-cyber-indigo to-cyber-cyan bg-clip-text text-transparent drop-shadow-sm">م. عبدالعزيز وهاس</p>
-               <span className="w-12 h-[1px] bg-gradient-to-r from-cyber-indigo/50 to-transparent"></span>
+               <span className="w-12 h-[1px] bg-gradient-to-l from-tenant-primary/50 to-transparent"></span>
+               <p className="text-[15px] font-black bg-gradient-to-r from-tenant-primary to-tenant-secondary bg-clip-text text-transparent drop-shadow-sm">م. عبدالعزيز وهاس</p>
+               <span className="w-12 h-[1px] bg-gradient-to-r from-tenant-primary/50 to-transparent"></span>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-[11px] text-zinc-500 dark:text-zinc-400 font-mono mt-3 bg-zinc-100/50 dark:bg-titanium-900/50 px-5 py-2 rounded-2xl sm:rounded-full border border-zinc-200/50 dark:border-titanium-800/50">
               <span className="flex items-center gap-2" dir="ltr">
-                <span className="text-cyber-cyan text-xs">📱</span> +967 781 291 954
+                <span className="text-tenant-secondary text-xs">📱</span> +967 781 291 954
               </span>
               <span className="hidden sm:block text-zinc-300 dark:text-titanium-700 opacity-50">|</span>
               <span className="flex items-center gap-2" dir="ltr">
-                <span className="text-cyber-cyan text-xs">📱</span> +967 715 358 127
+                <span className="text-tenant-secondary text-xs">📱</span> +967 715 358 127
               </span>
             </div>
           </div>
@@ -265,11 +270,11 @@ function Layout({ onLogout }: { onLogout: () => void }) {
                 }`}
               >
                 {isActive && (
-                  <div className="absolute top-0 left-[20%] right-[20%] h-1 bg-gradient-to-r from-cyber-indigo to-cyber-cyan rounded-b-full shadow-[0_2px_10px_rgba(0,0,0,0.3)] shadow-cyber-cyan/40" />
+                  <div className="absolute top-0 left-[20%] right-[20%] h-1 bg-gradient-to-r from-tenant-primary to-tenant-secondary rounded-b-full shadow-[0_2px_10px_rgba(0,0,0,0.3)] shadow-tenant-secondary/40" />
                 )}
                 <span className={`text-base font-semibold tracking-wide transition-all duration-300 ${
                   isActive 
-                    ? 'font-black bg-gradient-to-r from-cyber-indigo to-cyber-cyan bg-clip-text text-transparent drop-shadow-sm scale-110' 
+                    ? 'font-black bg-gradient-to-r from-tenant-primary to-tenant-secondary bg-clip-text text-transparent drop-shadow-sm scale-110' 
                     : ''
                 }`}>
                   {item.label}

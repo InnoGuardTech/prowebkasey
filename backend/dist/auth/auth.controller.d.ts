@@ -9,10 +9,13 @@ export declare class AuthController {
             email: any;
             full_name: any;
             role: any;
+            company_id: any;
         };
     }>;
     register(req: any): Promise<{
         id: string;
+        company_id: string;
+        company: import("../entities/company.entity").Company;
         full_name: string;
         email: string;
         phone: string;

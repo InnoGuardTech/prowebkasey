@@ -22,7 +22,7 @@ let ExpensesService = class ExpensesService {
     constructor(expensesRepository) {
         this.expensesRepository = expensesRepository;
     }
-    async findAll(userRole, userId, page = 1, limit = 20) {
+    async findAll(userRole, userId, page = 1, limit = 20, companyId) {
         const query = this.expensesRepository.createQueryBuilder('expense')
             .leftJoinAndSelect('expense.truck', 'truck')
             .leftJoinAndSelect('truck.driver', 'driver')
@@ -31,16 +31,22 @@ let ExpensesService = class ExpensesService {
             .leftJoinAndSelect('expense.approver', 'approver')
             .where('expense.is_deleted = false')
             .orderBy('expense.expense_date', 'DESC');
-        if (userRole === 'driver') {
+        if (companyId) {
+            query.andWhere('expense.company_id = :companyId', { companyId });
+        }
+        if (userRole === 'driver' && userId) {
             query.andWhere('(creator.id = :userId OR driver.id = :userId)', { userId });
         }
         const total = await query.getCount();
         const data = await query.skip((page - 1) * limit).take(limit).getMany();
         return { data, total, page, lastPage: Math.ceil(total / limit) };
     }
-    async findOne(id) {
+    async findOne(id, companyId) {
+        const whereClause = { id, is_deleted: false };
+        if (companyId)
+            whereClause.company_id = companyId;
         const expense = await this.expensesRepository.findOne({
-            where: { id, is_deleted: false },
+            where: whereClause,
             relations: { truck: true, category: true, creator: true, approver: true }
         });
         if (!expense) {
@@ -48,12 +54,13 @@ let ExpensesService = class ExpensesService {
         }
         return expense;
     }
-    async create(expenseData, userId) {
+    async create(expenseData, userId, companyId) {
         const { truck_id, category_id, ...rest } = expenseData;
         const newExpense = {
             ...rest,
             creator: { id: userId },
             is_approved: false,
+            company_id: companyId
         };
         if (truck_id)
             newExpense.truck = { id: truck_id };
@@ -61,8 +68,8 @@ let ExpensesService = class ExpensesService {
             newExpense.category = { id: category_id };
         return this.expensesRepository.save(newExpense);
     }
-    async update(id, expenseData) {
-        await this.findOne(id);
+    async update(id, expenseData, companyId) {
+        await this.findOne(id, companyId);
         const { truck_id, category_id, ...rest } = expenseData;
         const updateData = { ...rest };
         if (truck_id !== undefined) {
@@ -72,28 +79,29 @@ let ExpensesService = class ExpensesService {
             updateData.category = category_id ? { id: category_id } : null;
         }
         await this.expensesRepository.save({ id, ...updateData });
-        return this.findOne(id);
+        return this.findOne(id, companyId);
     }
-    async approve(id, approverId) {
-        await this.findOne(id);
+    async approve(id, approverId, companyId) {
+        await this.findOne(id, companyId);
         await this.expensesRepository.update(id, {
             is_approved: true,
             approver: { id: approverId },
             approved_at: new Date()
         });
-        return this.findOne(id);
+        return this.findOne(id, companyId);
     }
-    async reject(id, reason) {
-        await this.findOne(id);
+    async reject(id, reason, companyId) {
+        await this.findOne(id, companyId);
         await this.expensesRepository.update(id, {
             is_approved: false,
             rejection_reason: reason
         });
-        return this.findOne(id);
+        return this.findOne(id, companyId);
     }
-    async remove(id) {
-        await this.findOne(id);
-        await this.expensesRepository.update(id, { is_deleted: true, deleted_at: new Date() });
+    async remove(id, companyId) {
+        await this.findOne(id, companyId);
+        await this.expensesRepository.softDelete(id);
+        await this.expensesRepository.update(id, { is_deleted: true });
     }
 };
 exports.ExpensesService = ExpensesService;

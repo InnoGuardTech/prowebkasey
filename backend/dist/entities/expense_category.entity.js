@@ -12,14 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpenseCategory = void 0;
 const typeorm_1 = require("typeorm");
 const expense_entity_1 = require("./expense.entity");
+const company_entity_1 = require("./company.entity");
 let ExpenseCategory = class ExpenseCategory {
     id;
+    company_id;
+    company;
     name;
     description;
     color;
     sort_order;
     is_active;
     created_at;
+    deleted_at;
     expenses;
 };
 exports.ExpenseCategory = ExpenseCategory;
@@ -27,6 +31,15 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], ExpenseCategory.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], ExpenseCategory.prototype, "company_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => company_entity_1.Company),
+    (0, typeorm_1.JoinColumn)({ name: 'company_id' }),
+    __metadata("design:type", company_entity_1.Company)
+], ExpenseCategory.prototype, "company", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 100 }),
     __metadata("design:type", String)
@@ -51,6 +64,10 @@ __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], ExpenseCategory.prototype, "created_at", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", Date)
+], ExpenseCategory.prototype, "deleted_at", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => expense_entity_1.Expense, expense => expense.category),
     __metadata("design:type", Array)

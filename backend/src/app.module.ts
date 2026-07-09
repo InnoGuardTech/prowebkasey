@@ -13,10 +13,12 @@ import { Truck } from './entities/truck.entity';
 import { Driver } from './entities/driver.entity';
 import { Contractor } from './entities/contractor.entity';
 import { Invoice } from './entities/invoice.entity';
-import { Expense } from './entities/expense.entity';
+import { AuditLog } from './entities/audit_log.entity';
 import { Setting } from './entities/setting.entity';
+import { Expense } from './entities/expense.entity';
 import { ExpenseCategory } from './entities/expense_category.entity';
 import { Trip } from './entities/trip.entity';
+import { Company } from './entities/company.entity';
 import { TrucksModule } from './trucks/trucks.module';
 import { DriversModule } from './drivers/drivers.module';
 import { ContractorsModule } from './contractors/contractors.module';
@@ -25,11 +27,11 @@ import { InvoicesModule } from './invoices/invoices.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuditModule } from './audit/audit.module';
-import { AuditLog } from './entities/audit_log.entity';
 import { SearchModule } from './search/search.module';
 import { UsersModule } from './users/users.module';
 import { TripsModule } from './trips/trips.module';
 import { SettingsModule } from './settings/settings.module';
+import { CompaniesModule } from './companies/companies.module';
 
 @Module({
   imports: [
@@ -50,9 +52,9 @@ import { SettingsModule } from './settings/settings.module';
             port: configService.get<number>('DB_PORT', 5432),
             username: configService.get<string>('DB_USERNAME', 'postgres'),
             password: configService.get<string>('DB_PASSWORD', 'root'),
-            database: configService.get<string>('DB_DATABASE', 'prokasey_db'),
+            database: configService.get<string>('DB_DATABASE', 'qiyada_db'),
             ssl: configService.get<string>('DB_URL') ? { rejectUnauthorized: false } : false, // Required for Supabase
-            entities: [User, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
+            entities: [User, Company, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
             synchronize: true, // Auto-create tables (dev only)
           };
         } else if (type === 'mysql') {
@@ -62,8 +64,8 @@ import { SettingsModule } from './settings/settings.module';
             port: configService.get<number>('DB_PORT', 3306),
             username: configService.get<string>('DB_USERNAME', 'root'),
             password: configService.get<string>('DB_PASSWORD', ''),
-            database: configService.get<string>('DB_DATABASE', 'prokasey_db'),
-            entities: [User, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
+            database: configService.get<string>('DB_DATABASE', 'qiyada_db'),
+            entities: [User, Company, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
             synchronize: true, // Auto-create tables (dev only)
           };
         }
@@ -72,7 +74,7 @@ import { SettingsModule } from './settings/settings.module';
         return {
           type: 'better-sqlite3' as any,
           database: 'database.sqlite',
-          entities: [User, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
+          entities: [User, Company, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
           synchronize: true,
         };
       },
@@ -92,6 +94,7 @@ import { SettingsModule } from './settings/settings.module';
     UsersModule,
     TripsModule,
     SettingsModule,
+    CompaniesModule,
   ],
   controllers: [AppController],
   providers: [

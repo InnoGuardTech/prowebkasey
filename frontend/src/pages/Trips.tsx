@@ -150,7 +150,7 @@ function Trips() {
       date: new Date(t.start_date).toLocaleDateString('en-SA'),
       status: t.status === 'active' ? 'Active' : t.status === 'completed' ? 'Completed' : 'Cancelled',
     }));
-    await exportToPDF(columns, rows, 'Trips', 'Trips Report - Prokasey', [
+    await exportToPDF(columns, rows, 'Trips', 'Trips Report - Qiyada', [
       { label: 'Total Trips', value: String(trips.length) },
       { label: 'Active Trips', value: String(trips.filter(t => t.status === 'active').length) },
     ]);
@@ -161,7 +161,7 @@ function Trips() {
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 no-print">
         <h2 className="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2"><FiMapPin className="text-cyber-indigo" /> إدارة الرحلات</h2>
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => printTable('الرحلات - Prokasey')} className="bg-zinc-700 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105">طباعة</button>
+          <button onClick={() => printTable('الرحلات - Qiyada')} className="bg-zinc-700 hover:bg-zinc-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105">طباعة</button>
           <button onClick={handleExportExcel} className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105">Excel</button>
           <button onClick={handleExportPDF} className="bg-finance-red hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 transition-all hover:scale-105">PDF</button>
           <button 

@@ -1,12 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Truck } from './truck.entity';
 import { ExpenseCategory } from './expense_category.entity';
 import { User } from './user.entity';
+import { Company } from './company.entity';
 
 @Entity('expenses')
 export class Expense {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ nullable: true })
+  company_id: string;
+
+  @ManyToOne(() => Company)
+  @JoinColumn({ name: 'company_id' })
+  company: Company;
 
   @Column({ name: 'truck_id', nullable: true })
   truck_id: string;
@@ -48,7 +56,7 @@ export class Expense {
   @JoinColumn({ name: 'approved_by' })
   approver: User;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ nullable: true })
   approved_at: Date;
 
   @Column({ type: 'text', nullable: true })
@@ -61,7 +69,7 @@ export class Expense {
   @Column({ default: false })
   is_deleted: boolean;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @DeleteDateColumn()
   deleted_at: Date;
 
   @CreateDateColumn()

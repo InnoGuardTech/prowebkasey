@@ -11,15 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Setting = void 0;
 const typeorm_1 = require("typeorm");
+const company_entity_1 = require("./company.entity");
 let Setting = class Setting {
     key;
+    company_id;
+    company;
     value;
 };
 exports.Setting = Setting;
 __decorate([
-    (0, typeorm_1.PrimaryColumn)({ length: 100 }),
+    (0, typeorm_1.PrimaryColumn)({ length: 50 }),
     __metadata("design:type", String)
 ], Setting.prototype, "key", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Setting.prototype, "company_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => company_entity_1.Company),
+    (0, typeorm_1.JoinColumn)({ name: 'company_id' }),
+    __metadata("design:type", company_entity_1.Company)
+], Setting.prototype, "company", void 0);
 __decorate([
     (0, typeorm_1.Column)('text'),
     __metadata("design:type", String)

@@ -12,9 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Driver = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("./user.entity");
+const company_entity_1 = require("./company.entity");
 let Driver = class Driver {
     id;
     user;
+    company_id;
+    company;
     license_number;
     license_expiry;
     salary;
@@ -22,6 +25,7 @@ let Driver = class Driver {
     emergency_contact;
     iqama_number;
     iqama_expiry;
+    deleted_at;
 };
 exports.Driver = Driver;
 __decorate([
@@ -33,6 +37,15 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'id' }),
     __metadata("design:type", user_entity_1.User)
 ], Driver.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Driver.prototype, "company_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => company_entity_1.Company),
+    (0, typeorm_1.JoinColumn)({ name: 'company_id' }),
+    __metadata("design:type", company_entity_1.Company)
+], Driver.prototype, "company", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 50, nullable: true }),
     __metadata("design:type", String)
@@ -61,6 +74,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'date', nullable: true }),
     __metadata("design:type", Date)
 ], Driver.prototype, "iqama_expiry", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", Date)
+], Driver.prototype, "deleted_at", void 0);
 exports.Driver = Driver = __decorate([
     (0, typeorm_1.Entity)('drivers')
 ], Driver);

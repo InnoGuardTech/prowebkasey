@@ -22,23 +22,31 @@ let TripsService = class TripsService {
     constructor(tripRepository) {
         this.tripRepository = tripRepository;
     }
-    async findAll(userRole, userId, page = 1, limit = 20) {
+    async findAll(userRole, userId, page = 1, limit = 20, companyId) {
         const query = this.tripRepository.createQueryBuilder('trip')
             .leftJoinAndSelect('trip.truck', 'truck')
             .leftJoinAndSelect('trip.driver', 'driver')
+            .where('trip.deleted_at IS NULL')
             .orderBy('trip.created_at', 'DESC');
+        if (companyId) {
+            query.andWhere('trip.company_id = :companyId', { companyId });
+        }
         if (userRole === 'driver') {
-            query.where('driver.id = :userId', { userId });
+            query.andWhere('driver.id = :userId', { userId });
         }
         const total = await query.getCount();
         const data = await query.skip((page - 1) * limit).take(limit).getMany();
         return { data, total, page, lastPage: Math.ceil(total / limit) };
     }
-    async findOne(id, userRole, userId) {
+    async findOne(id, userRole, userId, companyId) {
         const query = this.tripRepository.createQueryBuilder('trip')
             .leftJoinAndSelect('trip.truck', 'truck')
             .leftJoinAndSelect('trip.driver', 'driver')
-            .where('trip.id = :id', { id });
+            .where('trip.id = :id', { id })
+            .andWhere('trip.is_deleted = false');
+        if (companyId) {
+            query.andWhere('trip.company_id = :companyId', { companyId });
+        }
         if (userRole === 'driver') {
             query.andWhere('driver.id = :userId', { userId });
         }
@@ -47,16 +55,18 @@ let TripsService = class TripsService {
             throw new common_1.NotFoundException('Trip not found');
         return trip;
     }
-    async create(createTripDto) {
-        const trip = this.tripRepository.create(createTripDto);
+    async create(createTripDto, companyId) {
+        const trip = this.tripRepository.create({ ...createTripDto, company_id: companyId });
         return this.tripRepository.save(trip);
     }
-    async update(id, updateTripDto) {
+    async update(id, updateTripDto, companyId) {
+        await this.findOne(id, 'admin', '', companyId);
         await this.tripRepository.update(id, updateTripDto);
-        return this.findOne(id, 'admin', '');
+        return this.findOne(id, 'admin', '', companyId);
     }
-    async remove(id) {
-        await this.tripRepository.delete(id);
+    async remove(id, companyId) {
+        await this.findOne(id, 'admin', '', companyId);
+        await this.tripRepository.softDelete(id);
         return { success: true };
     }
 };

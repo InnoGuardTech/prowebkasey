@@ -4,11 +4,13 @@
 
 @layer base {
   :root {
-    --chart-income: #4338CA;
-    --chart-income-light: #06B6D4;
+    --chart-income: var(--tenant-primary, #4338CA);
+    --chart-income-light: var(--tenant-secondary, #06B6D4);
     --chart-expense: #F43F5E;
     --chart-grid: #E2E8F0;
     --chart-text: #64748B;
+    --tenant-primary: #4338CA;
+    --tenant-secondary: #06B6D4;
   }
   
   .dark {

@@ -17,6 +17,10 @@ export default {
         finance: {
           green: '#10B981',
           red: '#F43F5E',
+        },
+        tenant: {
+          primary: 'var(--tenant-primary, #4338CA)',
+          secondary: 'var(--tenant-secondary, #06B6D4)',
         }
       },
       fontFamily: {

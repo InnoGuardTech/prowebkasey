@@ -1,27 +1,23 @@
-const { Client } = require('pg');
+const { DataSource } = require('typeorm');
 
-const client = new Client({
-  connectionString: "postgresql://postgres:kayan123456789a@db.kbughhqrcixjpqaqrjxu.supabase.co:5432/postgres"
+const dataSource = new DataSource({
+  type: 'postgres',
+  url: 'postgresql://postgres.kbughhqrcixjpqaqrjxu:kayan1223456789a@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres',
+  ssl: { rejectUnauthorized: false },
+  entities: [__dirname + '/src/**/*.entity.{js,ts}'],
+  synchronize: true
 });
 
 async function run() {
   try {
-    await client.connect();
-    console.log("Connected to Supabase.");
-
-    const users = await client.query('SELECT id, full_name, role FROM "user"');
-    console.log("Users:", users.rows);
-    
-    const invoices = await client.query('SELECT * FROM "invoice"');
-    console.log("Invoices count:", invoices.rows.length);
-    
-    const trucks = await client.query('SELECT * FROM "truck"');
-    console.log("Trucks count:", trucks.rows.length);
-
+    await dataSource.initialize();
+    console.log("Connected to Supabase via TypeORM.");
+    const users = await dataSource.query('SELECT * FROM "user"');
+    console.log("Users in DB:", users);
   } catch (err) {
     console.error("Error:", err);
   } finally {
-    await client.end();
+    if (dataSource.isInitialized) await dataSource.destroy();
   }
 }
 run();

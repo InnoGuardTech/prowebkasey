@@ -15,8 +15,11 @@ const driver_entity_1 = require("./driver.entity");
 const truck_entity_1 = require("./truck.entity");
 const invoice_entity_1 = require("./invoice.entity");
 const expense_entity_1 = require("./expense.entity");
+const company_entity_1 = require("./company.entity");
 let User = class User {
     id;
+    company_id;
+    company;
     full_name;
     email;
     password_hash;
@@ -36,6 +39,15 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], User.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "company_id", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => company_entity_1.Company, company => company.users, { nullable: true }),
+    (0, typeorm_1.JoinColumn)({ name: 'company_id' }),
+    __metadata("design:type", company_entity_1.Company)
+], User.prototype, "company", void 0);
 __decorate([
     (0, typeorm_1.Column)({ length: 150 }),
     __metadata("design:type", String)

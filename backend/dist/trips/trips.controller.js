@@ -23,20 +23,20 @@ let TripsController = class TripsController {
     constructor(tripsService) {
         this.tripsService = tripsService;
     }
-    create(createTripDto) {
-        return this.tripsService.create(createTripDto);
+    create(createTripDto, req) {
+        return this.tripsService.create(createTripDto, req.user?.company_id);
     }
     findAll(req, page = '1', limit = '20') {
-        return this.tripsService.findAll(req.user.role, req.user.id, Number(page), Number(limit));
+        return this.tripsService.findAll(req.user?.role, req.user?.id, Number(page), Number(limit), req.user?.company_id);
     }
     findOne(id, req) {
-        return this.tripsService.findOne(id, req.user.role, req.user.id);
+        return this.tripsService.findOne(id, req.user?.role, req.user?.id, req.user?.company_id);
     }
-    update(id, updateTripDto) {
-        return this.tripsService.update(id, updateTripDto);
+    update(id, updateTripDto, req) {
+        return this.tripsService.update(id, updateTripDto, req.user?.company_id);
     }
-    remove(id) {
-        return this.tripsService.remove(id);
+    remove(id, req) {
+        return this.tripsService.remove(id, req.user?.company_id);
     }
 };
 exports.TripsController = TripsController;
@@ -44,8 +44,9 @@ __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)('admin', 'accountant'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], TripsController.prototype, "create", null);
 __decorate([
@@ -70,16 +71,18 @@ __decorate([
     (0, roles_decorator_1.Roles)('admin', 'accountant'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", void 0)
 ], TripsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)('admin'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], TripsController.prototype, "remove", null);
 exports.TripsController = TripsController = __decorate([

@@ -27,6 +27,13 @@ async function main() {
     { truck_number: 'TRK-1004', status: 'active', notes: 'قاطرة مان TGX 2024' },
     { truck_number: 'TRK-1005', status: 'inactive', notes: 'قاطرة داف XF - متوقفة مؤقتاً' },
   ];
+  const isProd = true; 
+const PROD_DB_URL = "postgresql://postgres.kbughhqrcixjpqaqrjxu:kayan1223456789a@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres";
+const DB_HOST = "aws-0-ap-northeast-1.pooler.supabase.com";
+const DB_PORT = 6543;
+const DB_USER = "postgres.kbughhqrcixjpqaqrjxu";
+const DB_PASS = "kayan1223456789a";
+const DB_NAME = "postgres";
   const truckIds = [];
   for (const t of trucks) {
     const r = await post('/api/v1/trucks', t);

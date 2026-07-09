@@ -22,10 +22,12 @@ const truck_entity_1 = require("./entities/truck.entity");
 const driver_entity_1 = require("./entities/driver.entity");
 const contractor_entity_1 = require("./entities/contractor.entity");
 const invoice_entity_1 = require("./entities/invoice.entity");
-const expense_entity_1 = require("./entities/expense.entity");
+const audit_log_entity_1 = require("./entities/audit_log.entity");
 const setting_entity_1 = require("./entities/setting.entity");
+const expense_entity_1 = require("./entities/expense.entity");
 const expense_category_entity_1 = require("./entities/expense_category.entity");
 const trip_entity_1 = require("./entities/trip.entity");
+const company_entity_1 = require("./entities/company.entity");
 const trucks_module_1 = require("./trucks/trucks.module");
 const drivers_module_1 = require("./drivers/drivers.module");
 const contractors_module_1 = require("./contractors/contractors.module");
@@ -34,11 +36,11 @@ const invoices_module_1 = require("./invoices/invoices.module");
 const expenses_module_1 = require("./expenses/expenses.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
 const audit_module_1 = require("./audit/audit.module");
-const audit_log_entity_1 = require("./entities/audit_log.entity");
 const search_module_1 = require("./search/search.module");
 const users_module_1 = require("./users/users.module");
 const trips_module_1 = require("./trips/trips.module");
 const settings_module_1 = require("./settings/settings.module");
+const companies_module_1 = require("./companies/companies.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -62,9 +64,9 @@ exports.AppModule = AppModule = __decorate([
                             port: configService.get('DB_PORT', 5432),
                             username: configService.get('DB_USERNAME', 'postgres'),
                             password: configService.get('DB_PASSWORD', 'root'),
-                            database: configService.get('DB_DATABASE', 'prokasey_db'),
+                            database: configService.get('DB_DATABASE', 'qiyada_db'),
                             ssl: configService.get('DB_URL') ? { rejectUnauthorized: false } : false,
-                            entities: [user_entity_1.User, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
+                            entities: [user_entity_1.User, company_entity_1.Company, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
                             synchronize: true,
                         };
                     }
@@ -75,15 +77,15 @@ exports.AppModule = AppModule = __decorate([
                             port: configService.get('DB_PORT', 3306),
                             username: configService.get('DB_USERNAME', 'root'),
                             password: configService.get('DB_PASSWORD', ''),
-                            database: configService.get('DB_DATABASE', 'prokasey_db'),
-                            entities: [user_entity_1.User, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
+                            database: configService.get('DB_DATABASE', 'qiyada_db'),
+                            entities: [user_entity_1.User, company_entity_1.Company, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
                             synchronize: true,
                         };
                     }
                     return {
                         type: 'better-sqlite3',
                         database: 'database.sqlite',
-                        entities: [user_entity_1.User, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
+                        entities: [user_entity_1.User, company_entity_1.Company, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
                         synchronize: true,
                     };
                 },
@@ -103,6 +105,7 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             trips_module_1.TripsModule,
             settings_module_1.SettingsModule,
+            companies_module_1.CompaniesModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

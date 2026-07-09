@@ -63,19 +63,19 @@ let SeedService = SeedService_1 = class SeedService {
     }
     async seedAdmin() {
         const existing = await this.usersRepository.findOne({
-            where: { email: 'admin@prokasey.com' },
+            where: { email: 'admin@qiyada.com' },
         });
         if (!existing) {
             const salt = await bcrypt.genSalt();
             const hashed = await bcrypt.hash('Admin@123', salt);
             const admin = this.usersRepository.create({
                 full_name: 'مدير النظام',
-                email: 'admin@prokasey.com',
+                email: 'admin@qiyada.com',
                 password_hash: hashed,
                 role: 'manager',
             });
             await this.usersRepository.save(admin);
-            this.logger.log('✅ Admin user created: admin@prokasey.com / Admin@123');
+            this.logger.log('✅ Admin user created: admin@qiyada.com / Admin@123');
         }
         else {
             this.logger.log('ℹ️  Admin user already exists, skipping seed.');
