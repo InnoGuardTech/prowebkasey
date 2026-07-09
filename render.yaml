@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: qiyada-api
+    env: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: node dist/main
+    envVars:
+      - key: DB_TYPE
+        value: postgres
+      - key: DB_URL
+        value: postgresql://qiyada_admin:gHtM4lb6hq9fOFPTd4icAElxd3ORQPn5@dpg-d980em6rnols73alvt00-a/qiyada
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000

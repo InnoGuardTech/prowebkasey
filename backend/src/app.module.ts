@@ -46,6 +46,9 @@ import { CompaniesModule } from './companies/companies.module';
         const type = configService.get<string>('DB_TYPE', 'sqlite');
         const dbUrl = configService.get<string>('DB_URL');
         if (type === 'postgres') {
+          // Render internal DBs (hostname contains 'dpg-') don't need SSL
+          // External DBs (Supabase, Neon, etc.) do need SSL
+          const isRenderInternal = dbUrl && dbUrl.includes('dpg-');
           return {
             type: 'postgres',
             ...(dbUrl ? { url: dbUrl } : {
@@ -55,9 +58,9 @@ import { CompaniesModule } from './companies/companies.module';
               password: configService.get<string>('DB_PASSWORD', 'root'),
               database: configService.get<string>('DB_DATABASE', 'qiyada_db'),
             }),
-            ssl: dbUrl ? { rejectUnauthorized: false } : false, // Required for Supabase
+            ssl: isRenderInternal ? false : (dbUrl ? { rejectUnauthorized: false } : false),
             entities: [User, Company, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
-            synchronize: true, // Auto-create tables (dev only)
+            synchronize: true, // Auto-create tables
           };
         } else if (type === 'mysql') {
           return {
