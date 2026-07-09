@@ -44,16 +44,18 @@ import { CompaniesModule } from './companies/companies.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         const type = configService.get<string>('DB_TYPE', 'sqlite');
+        const dbUrl = configService.get<string>('DB_URL');
         if (type === 'postgres') {
           return {
             type: 'postgres',
-            url: configService.get<string>('DB_URL'),
-            host: configService.get<string>('DB_HOST', 'localhost'),
-            port: configService.get<number>('DB_PORT', 5432),
-            username: configService.get<string>('DB_USERNAME', 'postgres'),
-            password: configService.get<string>('DB_PASSWORD', 'root'),
-            database: configService.get<string>('DB_DATABASE', 'qiyada_db'),
-            ssl: configService.get<string>('DB_URL') ? { rejectUnauthorized: false } : false, // Required for Supabase
+            ...(dbUrl ? { url: dbUrl } : {
+              host: configService.get<string>('DB_HOST', 'localhost'),
+              port: configService.get<number>('DB_PORT', 5432),
+              username: configService.get<string>('DB_USERNAME', 'postgres'),
+              password: configService.get<string>('DB_PASSWORD', 'root'),
+              database: configService.get<string>('DB_DATABASE', 'qiyada_db'),
+            }),
+            ssl: dbUrl ? { rejectUnauthorized: false } : false, // Required for Supabase
             entities: [User, Company, Truck, Driver, Contractor, Invoice, Expense, ExpenseCategory, AuditLog, Trip, Setting],
             synchronize: true, // Auto-create tables (dev only)
           };

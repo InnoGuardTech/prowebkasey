@@ -56,16 +56,18 @@ exports.AppModule = AppModule = __decorate([
                 imports: [config_1.ConfigModule],
                 useFactory: (configService) => {
                     const type = configService.get('DB_TYPE', 'sqlite');
+                    const dbUrl = configService.get('DB_URL');
                     if (type === 'postgres') {
                         return {
                             type: 'postgres',
-                            url: configService.get('DB_URL'),
-                            host: configService.get('DB_HOST', 'localhost'),
-                            port: configService.get('DB_PORT', 5432),
-                            username: configService.get('DB_USERNAME', 'postgres'),
-                            password: configService.get('DB_PASSWORD', 'root'),
-                            database: configService.get('DB_DATABASE', 'qiyada_db'),
-                            ssl: configService.get('DB_URL') ? { rejectUnauthorized: false } : false,
+                            ...(dbUrl ? { url: dbUrl } : {
+                                host: configService.get('DB_HOST', 'localhost'),
+                                port: configService.get('DB_PORT', 5432),
+                                username: configService.get('DB_USERNAME', 'postgres'),
+                                password: configService.get('DB_PASSWORD', 'root'),
+                                database: configService.get('DB_DATABASE', 'qiyada_db'),
+                            }),
+                            ssl: dbUrl ? { rejectUnauthorized: false } : false,
                             entities: [user_entity_1.User, company_entity_1.Company, truck_entity_1.Truck, driver_entity_1.Driver, contractor_entity_1.Contractor, invoice_entity_1.Invoice, expense_entity_1.Expense, expense_category_entity_1.ExpenseCategory, audit_log_entity_1.AuditLog, trip_entity_1.Trip, setting_entity_1.Setting],
                             synchronize: true,
                         };
